@@ -13,7 +13,7 @@ return new class extends Migration
     Schema::create('requests', function (Blueprint $table) {
         $table->id();
         $table->string('ticket_code')->unique();
-        $table->text('nik'); // Akan di-encrypt [cite: 50]
+        $table->text('nik'); 
         $table->string('access_password');
         $table->string('name');
         $table->string('email');
