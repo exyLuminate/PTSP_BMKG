@@ -10,14 +10,15 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up() {
-    Schema::create('data_catalogs', function (Blueprint $table) {
-        $table->id();
-        $table->string('info_type');
-        $table->string('unit'); // Per-lokasi/hari [cite: 67]
-        $table->decimal('price', 15, 2);
-        $table->timestamps();
-    });
-}
+        Schema::create('data_catalogs', function (Blueprint $table) {
+            $table->id();
+            $table->string('category'); // Tambahkan kolom kategori untuk grouping
+            $table->string('info_type');
+            $table->string('unit');      // Contoh: per lokasi - per hari
+            $table->decimal('price', 15, 2);
+            $table->timestamps();
+        });
+    }
 
     /**
      * Reverse the migrations.
