@@ -22,7 +22,7 @@ return new class extends Migration
         $table->string('ktp_path');
         $table->string('letter_path');
         $table->foreignId('data_catalog_id')->constrained();
-        $table->enum('status', ['on_process', 'ready', 'rejected', 'waiting_payment', 'paid', 'expired', 'done'])->default('on_process');
+            $table->enum('status', ['on_process', 'ready', 'rejected', 'waiting_payment', 'paid', 'expired', 'done'])->default('on_process');
         $table->string('va_number')->nullable();
         $table->string('result_file_path')->nullable();
         $table->text('admin_note')->nullable();

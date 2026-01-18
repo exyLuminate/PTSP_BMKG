@@ -30,6 +30,8 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/requests', [RequestManagementController::class, 'index'])->name('admin.requests.index');
+    Route::get('/requests/{id}', [RequestManagementController::class, 'show'])->name('admin.requests.show');
+    Route::patch('/requests/{id}', [RequestManagementController::class, 'update'])->name('admin.requests.update');
 });
 
 require __DIR__.'/auth.php';

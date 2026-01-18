@@ -62,8 +62,12 @@ export default function RequestList({ auth, requests, filters }) {
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <button className="text-indigo-600 hover:text-indigo-900">Detail</button>
-                                            </td>
+                                            <Link 
+                                                href={route('admin.requests.show', req.id)} 
+                                                className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 px-3 py-1 rounded-full">
+                                                Detail / Verifikasi
+                                            </Link>
+                                        </td>
                                         </tr>
                                     ))}
                                 </tbody>
