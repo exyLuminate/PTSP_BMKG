@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class DataCatalog extends Model
 {
-    protected $fillable = ['info_type', 'unit', 'price'];
+    protected $fillable = ['info_type', 'unit', 'price', 'category'];
 
     public function requests()
     {

@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\RequestManagementController;
+use App\Http\Controllers\Admin\DataCatalogController;
 use App\Http\Controllers\FileStreamController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -28,12 +29,13 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-    Route::get('/requests', [RequestManagementController::class, 'index'])->name('admin.requests.index');
-    Route::get('/requests/{id}', [RequestManagementController::class, 'show'])->name('admin.requests.show');
-    Route::patch('/requests/{id}', [RequestManagementController::class, 'update'])->name('admin.requests.update');
-    Route::get('/admin/requests/{id}/file/{type}', [FileStreamController::class, 'streamForAdmin'])->name('admin.file.stream');
+Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/requests', [RequestManagementController::class, 'index'])->name('requests.index');
+    Route::get('/requests/{id}', [RequestManagementController::class, 'show'])->name('requests.show');
+    Route::patch('/requests/{id}', [RequestManagementController::class, 'update'])->name('requests.update');
+    Route::get('/requests/{id}/file/{type}', [FileStreamController::class, 'streamForAdmin'])->name('file.stream');
+    Route::resource('catalogs', DataCatalogController::class)->except(['create', 'edit']);
 });
 
 require __DIR__.'/auth.php';
