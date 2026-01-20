@@ -7,23 +7,22 @@ import { useState } from 'react';
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
-
-    const [showingNavigationDropdown, setShowingNavigationDropdown] =
-        useState(false);
+    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen bg-gray-100 font-sans">
             <nav className="border-b border-gray-100 bg-white">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
                         <div className="flex">
+                            {/* Logo */}
                             <div className="flex shrink-0 items-center">
                                 <Link href={route('admin.dashboard')}>
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
+                                    <ApplicationLogo className="block h-9 w-auto fill-current text-blue-600" />
                                 </Link>
                             </div>
 
-                            {/* Navigation Links (Desktop) */}
+                            {/* --- Navigation Links (Desktop) --- */}
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink
                                     href={route('admin.dashboard')}
@@ -32,16 +31,40 @@ export default function AuthenticatedLayout({ header, children }) {
                                     Dashboard
                                 </NavLink>
                                 
-                                {/* Link Baru: Daftar Permintaan [cite: 240] */}
                                 <NavLink
                                     href={route('admin.requests.index')}
-                                    active={route().current('admin.requests.index')}
+                                    active={route().current('admin.requests.*')}
                                 >
                                     Daftar Permintaan
+                                </NavLink>
+
+                                {/* Manajemen Katalog */}
+                                <NavLink
+                                    href={route('admin.catalogs.index')}
+                                    active={route().current('admin.catalogs.*')}
+                                >
+                                    Katalog Layanan
+                                </NavLink>
+
+                                {/* Manajemen FAQ */}
+                                <NavLink
+                                    href={route('admin.faqs.index')}
+                                    active={route().current('admin.faqs.*')}
+                                >
+                                    FAQ
+                                </NavLink>
+
+                                {/* Log Aktivitas / Audit Trail */}
+                                <NavLink
+                                    href={route('admin.logs.index')}
+                                    active={route().current('admin.logs.*')}
+                                >
+                                    Audit Trail
                                 </NavLink>
                             </div>
                         </div>
 
+                        {/* User Dropdown */}
                         <div className="hidden sm:ms-6 sm:flex sm:items-center">
                             <div className="relative ms-3">
                                 <Dropdown>
@@ -49,93 +72,60 @@ export default function AuthenticatedLayout({ header, children }) {
                                         <span className="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
-                                            >
-                                                {user.name}
+                                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-bold leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
+                                            >                                                {user.name}
 
-                                                <svg
-                                                    className="-me-0.5 ms-2 h-4 w-4"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path
-                                                        fillRule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                        clipRule="evenodd"
-                                                    />
+                                                <svg className="-me-0.5 ms-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                                                 </svg>
                                             </button>
                                         </span>
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content>
-                                        <Dropdown.Link href={route('profile.edit')}>
-                                            Profile
-                                        </Dropdown.Link>
-                                        <Dropdown.Link
-                                            href={route('logout')}
-                                            method="post"
-                                            as="button"
-                                        >
-                                            Log Out
-                                        </Dropdown.Link>
+                                        <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>
+                                        <Dropdown.Link href={route('logout')} method="post" as="button">Log Out</Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>
                             </div>
                         </div>
 
+                        {/* Hamburger Button (Mobile) */}
                         <div className="-me-2 flex items-center sm:hidden">
                             <button
-                                onClick={() =>
-                                    setShowingNavigationDropdown(
-                                        (previousState) => !previousState,
-                                    )
-                                }
-                                className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:bg-gray-100 focus:text-gray-500 focus:outline-none"
+                                onClick={() => setShowingNavigationDropdown((previousState) => !previousState)}
+                                className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:outline-none"
                             >
-                                <svg
-                                    className="h-6 w-6"
-                                    stroke="currentColor"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        className={!showingNavigationDropdown ? 'inline-flex' : 'hidden'}
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M4 6h16M4 12h16M4 18h16"
-                                    />
-                                    <path
-                                        className={showingNavigationDropdown ? 'inline-flex' : 'hidden'}
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
+                                <svg className="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                    <path className={!showingNavigationDropdown ? 'inline-flex' : 'hidden'} strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                                    <path className={showingNavigationDropdown ? 'inline-flex' : 'hidden'} strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                                 </svg>
                             </button>
                         </div>
                     </div>
                 </div>
 
-                {/* Mobile Navigation Menu */}
+                {/* --- Mobile Navigation Menu --- */}
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                     <div className="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink
-                            href={route('admin.dashboard')}
-                            active={route().current('admin.dashboard')}
-                        >
+                        <ResponsiveNavLink href={route('admin.dashboard')} active={route().current('admin.dashboard')}>
                             Dashboard
                         </ResponsiveNavLink>
                         
-                        {/* Link Baru Mobile: Daftar Permintaan [cite: 240] */}
-                        <ResponsiveNavLink
-                            href={route('admin.requests.index')}
-                            active={route().current('admin.requests.index')}
-                        >
+                        <ResponsiveNavLink href={route('admin.requests.index')} active={route().current('admin.requests.*')}>
                             Daftar Permintaan
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink href={route('admin.catalogs.index')} active={route().current('admin.catalogs.*')}>
+                            Katalog Layanan
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink href={route('admin.faqs.index')} active={route().current('admin.faqs.*')}>
+                            Manajemen FAQ
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink href={route('admin.logs.index')} active={route().current('admin.logs.*')}>
+                            Audit Trail
                         </ResponsiveNavLink>
                     </div>
 
@@ -147,9 +137,7 @@ export default function AuthenticatedLayout({ header, children }) {
 
                         <div className="mt-3 space-y-1">
                             <ResponsiveNavLink href={route('profile.edit')}>Profile</ResponsiveNavLink>
-                            <ResponsiveNavLink method="post" href={route('logout')} as="button">
-                                Log Out
-                            </ResponsiveNavLink>
+                            <ResponsiveNavLink method="post" href={route('logout')} as="button">Log Out</ResponsiveNavLink>
                         </div>
                     </div>
                 </div>

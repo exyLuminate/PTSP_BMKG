@@ -7,10 +7,12 @@ use App\Models\FaqMessage;
 use App\Http\Controllers\Admin\RequestManagementController;
 use App\Http\Controllers\Admin\DataCatalogController;
 use App\Models\DataCatalog;
+use App\Http\Controllers\Admin\ActivityLogController;
 use App\Http\Controllers\FileStreamController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\Admin\ReportController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -49,6 +51,9 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/requests/{id}/file/{type}', [FileStreamController::class, 'streamForAdmin'])->name('file.stream');
     Route::resource('catalogs', DataCatalogController::class)->except(['create', 'edit']);
     Route::resource('faqs', FaqManagementController::class)->only(['index', 'update', 'destroy']);
+    Route::get('/logs', [ActivityLogController::class, 'index'])->name('logs.index');
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::get('/reports/download', [ReportController::class, 'download'])->name('reports.download');
 });
 
 require __DIR__.'/auth.php';
