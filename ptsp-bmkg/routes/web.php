@@ -2,8 +2,11 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\FaqManagementController;
+use App\Models\FaqMessage;
 use App\Http\Controllers\Admin\RequestManagementController;
 use App\Http\Controllers\Admin\DataCatalogController;
+use App\Models\DataCatalog;
 use App\Http\Controllers\FileStreamController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -12,6 +15,7 @@ use Inertia\Inertia;
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
+        'catalogs' => DataCatalog::all(),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
@@ -21,6 +25,14 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/faq', function () {
+    return Inertia::render('Guest/FaqPage', [
+        'faqs' => FaqMessage::where('is_published', true)->orderBy('created_at', 'desc')->get()
+    ]);
+})->name('faq.index');
+
+Route::post('/faq', [App\Http\Controllers\Admin\FaqManagementController::class, 'store'])->name('faq.store');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -36,6 +48,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::patch('/requests/{id}', [RequestManagementController::class, 'update'])->name('requests.update');
     Route::get('/requests/{id}/file/{type}', [FileStreamController::class, 'streamForAdmin'])->name('file.stream');
     Route::resource('catalogs', DataCatalogController::class)->except(['create', 'edit']);
+    Route::resource('faqs', FaqManagementController::class)->only(['index', 'update', 'destroy']);
 });
 
 require __DIR__.'/auth.php';

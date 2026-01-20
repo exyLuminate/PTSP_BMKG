@@ -1,113 +1,230 @@
 import React from 'react';
 import { Head, Link } from '@inertiajs/react';
 
-const LandingPage = () => {
-    // Data tarif berdasarkan tabel di dokumen 
-    const tariffs = [
-        { info: 'Informasi Meteorologi untuk Keperluan Klaim Asuransi', unit: 'per lokasi - per hari', price: 'Rp. 175.000' },
-        { info: 'Informasi Cuaca Khusus untuk Kegiatan Olah Raga', unit: 'per lokasi - per hari', price: 'Rp. 100.000' },
-        { info: 'Informasi Cuaca Khusus untuk Kegiatan Komersial Outdoor/Indoor', unit: 'per lokasi - per hari', price: 'Rp. 100.000' },
-        { info: 'Data Radar Cuaca (per 10 menit)', unit: 'per lokasi - per hari', price: 'Rp. 70.000' },
-        { info: 'Jasa Konsultasi Meteorologi: Informasi Meteorologi Khusus untuk Pendukung Kegiatan Proyek, Survey, dan Penelitian Komersial', unit: 'Per lokasi', price: 'Rp. 3.750.000' },
-    ];
-
+export default function LandingPage({ catalogs, auth }) {
     return (
-        <div className="min-h-screen bg-gray-50 font-sans text-gray-900">
-            <Head title="PTSP BMKG - Beranda" />
+        <div className="min-h-screen bg-white font-sans text-slate-900 selection:bg-blue-100">
+            <Head title="Beranda - PTSP BMKG Radin Inten II" />
 
-            {/* Hero Sectio*/}
-            <header className="bg-[#1e3a8a] text-white py-16 px-6 text-center shadow-lg">
-                <h1 className="text-4xl md:text-5xl font-extrabold mb-4">Sistem Informasi PTSP BMKG</h1>
-                <p className="text-xl md:text-2xl mb-10 text-blue-100">Stasiun Meteorologi Radin Inten II</p>
-                
-                {/* Dua Tombol Utama  */}
-                <div className="flex flex-col md:flex-row justify-center gap-6">
-                    <Link 
-                        href="/permohonan" 
-                        className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 px-10 rounded-xl shadow-md transition-all transform hover:scale-105"
-                    >
-                        Permintaan Data
-                    </Link>
-                    <Link 
-                        href="/tracking" 
-                        className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 px-10 rounded-xl shadow-md transition-all transform hover:scale-105"
-                    >
-                        Pengecekan Data
-                    </Link>
-                </div>
-            </header>
-
-            <main className="max-w-6xl mx-auto py-12 px-6">
-                {/* Informasi Jam Operasional & Panduan*/}
-                <div className="grid md:grid-cols-2 gap-8 mb-16">
-                    <div className="bg-amber-50 p-8 rounded-2xl border border-amber-200 flex items-start space-x-4 shadow-sm">
-                        <div className="text-amber-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h2 className="text-2xl font-bold text-amber-900 mb-2">Jam Operasional</h2>
-                            <p className="text-amber-800 font-medium text-lg">Senin - Jumat: 08:00 - 16:00 WIB</p>
-                            <p className="text-sm mt-3 text-amber-700 leading-relaxed italic">
-                                *Sistem tetap dapat menerima permohonan kapan saja, namun pengecekan tiket hanya diproses pada jam kerja.</p>
+            {/* --- NAVBAR (BARU) --- */}
+            <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
+                <div className="container mx-auto px-6 h-20 flex justify-between items-center">
+                    {/* Brand/Logo */}
+                    <div className="flex items-center gap-3">
+                        {/* Ganti src dengan path logo BMKG jika sudah ada */}
+                        <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black italic shadow-lg shadow-blue-100">?</div>
+                        <div className="hidden md:block">
+                            <h2 className="font-black text-slate-800 text-sm leading-tight uppercase tracking-tighter">PTSP BMKG</h2>
+                            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Lampung</p>
                         </div>
                     </div>
 
-                    <div className="bg-blue-50 p-8 rounded-2xl border border-blue-200 flex items-start space-x-4 shadow-sm">
-                        <div className="text-blue-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h2 className="text-2xl font-bold text-blue-900 mb-2">Panduan Penggunaan</h2>
-                            <p className="text-blue-800 mb-4 text-lg">Pelajari tata cara pengajuan data melalui dokumen resmi kami.</p>
-                            <a 
-                                href="/files/panduan_ptsp.pdf" 
-                                download 
-                                className="inline-flex items-center text-blue-700 font-bold hover:text-blue-900 underline decoration-2 underline-offset-4"
+                    {/* Navigation Links */}
+                    <div className="flex items-center gap-4 md:gap-8">
+                        <a href="#how-it-works" className="hidden sm:block text-[10px] font-black text-slate-400 hover:text-blue-600 uppercase tracking-widest transition-colors">Prosedur</a>
+                        <a href="#catalogs" className="hidden sm:block text-[10px] font-black text-slate-400 hover:text-blue-600 uppercase tracking-widest transition-colors">Katalog</a>
+                        
+                        {/* Tombol Login Admin */}
+                        {auth.user ? (
+                            <Link 
+                                href={route('admin.dashboard')} 
+                                className="bg-slate-900 text-white px-6 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-blue-600 transition-all shadow-lg shadow-slate-200"
                             >
-                                Unduh PDF Panduan
-                            </a>
+                                Dashboard
+                            </Link>
+                        ) : (
+                            <Link 
+                                href={route('login')} 
+                                className="text-[10px] font-black text-slate-500 hover:text-blue-600 uppercase tracking-widest transition-colors border-l border-slate-200 pl-4 md:pl-8"
+                            >
+                                Login Admin
+                            </Link>
+                        )}
+                    </div>
+                </div>
+            </nav>
+
+            {/* --- SECTION 1: HERO SECTION --- */}
+            <section id="hero" className="relative min-h-screen flex items-center pt-24 pb-20 bg-gradient-to-br from-blue-50 via-white to-slate-100 overflow-hidden">
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-200/30 blur-[120px] rounded-full -mr-48 -mt-24"></div>
+                
+                <div className="container mx-auto px-6 relative z-10">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                        <div className="order-2 lg:order-1">
+                            <span className="inline-flex items-center py-2 px-4 rounded-full bg-blue-100 text-blue-700 text-[10px] font-black uppercase tracking-widest mb-6 gap-2">
+                                <span className="relative flex h-2 w-2">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
+                                </span>
+                                PTSP Online BMKG Lampung
+                            </span>
+                            <h1 className="text-5xl md:text-7xl font-black text-slate-900 mb-8 leading-[1.1] tracking-tighter">
+                                Akses Data Meteorologi <br />
+                                <span className="text-blue-600">Mudah & Transparan.</span>
+                            </h1>
+                            <p className="text-lg text-slate-600 mb-10 max-w-lg leading-relaxed font-medium">
+                                Platform resmi Stasiun Meteorologi Radin Inten II untuk permintaan data cuaca, iklim, dan jasa konsultasi meteorologi dengan sistem PNBP yang akuntabel.
+                            </p>
+                            <div className="flex gap-4 flex-wrap">
+                                <Link href="/permohonan" className="bg-blue-600 text-white px-10 py-4 rounded-2xl hover:bg-blue-700 font-black text-[10px] uppercase tracking-widest shadow-xl shadow-blue-200 hover:-translate-y-1 transition-all flex items-center gap-3">
+                                    Ajukan Permohonan 
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-4 h-4">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                                    </svg>
+                                </Link>
+                                <Link href="/tracking" className="bg-white text-slate-700 px-10 py-4 rounded-2xl hover:bg-slate-50 font-black text-[10px] uppercase tracking-widest border border-slate-200 shadow-sm transition-all flex items-center gap-2">
+                                    Cek Status Tiket
+                                </Link>
+                            </div>
+                        </div>
+
+                        <div className="order-1 lg:order-2 relative group">
+                            <div className="absolute inset-0 bg-blue-600 blur-[100px] opacity-10 rounded-full"></div>
+                            <img 
+                                src="https://images.unsplash.com/photo-1592210454359-9043f067919b?q=80&w=2070&auto=format&fit=crop" 
+                                alt="Ilustrasi Layanan BMKG" 
+                                className="relative rounded-[3rem] shadow-2xl border-8 border-white transform rotate-2 group-hover:rotate-0 transition-all duration-700 w-full object-cover h-[500px]"
+                            />
                         </div>
                     </div>
                 </div>
+            </section>
 
-                {/* Tabel Tarif */}
-                <section className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
-                    <div className="bg-gray-50 p-8 border-b border-gray-200">
-                        <h2 className="text-3xl font-bold text-gray-800">Daftar Informasi & Tarif</h2>
+            {/* --- SECTION 2: PROSEDUR --- */}
+            <section id="how-it-works" className="py-32 bg-white">
+                <div className="container mx-auto px-6">
+                    <div className="text-center mb-20">
+                        <span className="text-blue-600 font-black uppercase tracking-[0.3em] text-[10px]">Alur Layanan</span>
+                        <h2 className="text-4xl font-black text-slate-900 mt-4 tracking-tight">Prosedur Permohonan Data</h2>
                     </div>
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-left">
-                            <thead>
-                                <tr className="bg-gray-50 text-gray-600 uppercase text-sm tracking-wider">
-                                    <th className="p-6 font-bold border-b">Jenis Informasi</th>
-                                    <th className="p-6 font-bold border-b text-center">Satuan</th>
-                                    <th className="p-6 font-bold border-b text-right">Tarif</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-100">
-                                {tariffs.map((item, index) => (
-                                    <tr key={index} className="hover:bg-blue-50/50 transition-colors">
-                                        <td className="p-6 text-gray-700 font-medium leading-relaxed">{item.info}</td>
-                                        <td className="p-6 text-gray-600 text-center italic">{item.unit}</td>
-                                        <td className="p-6 font-bold text-right text-blue-700 text-lg whitespace-nowrap">{item.price}</td>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+                        <div className="p-8">
+                            <div className="w-20 h-20 bg-blue-50 text-blue-600 rounded-3xl text-2xl font-black flex items-center justify-center mx-auto mb-8 shadow-inner">1</div>
+                            <h3 className="text-xl font-black text-slate-900 mb-4 uppercase tracking-tight">Pilih Layanan</h3>
+                            <p className="text-slate-500 leading-relaxed font-medium">Lihat katalog layanan dan tentukan jenis data meteorologi yang Anda butuhkan.</p>
+                        </div>
+                        <div className="p-8">
+                            <div className="w-20 h-20 bg-blue-50 text-blue-600 rounded-3xl text-2xl font-black flex items-center justify-center mx-auto mb-8 shadow-inner">2</div>
+                            <h3 className="text-xl font-black text-slate-900 mb-4 uppercase tracking-tight">Isi Formulir</h3>
+                            <p className="text-slate-500 leading-relaxed font-medium">Lengkapi identitas diri dan unggah berkas persyaratan seperti KTP atau Surat Pengantar.</p>
+                        </div>
+                        <div className="p-8">
+                            <div className="w-20 h-20 bg-blue-50 text-blue-600 rounded-3xl text-2xl font-black flex items-center justify-center mx-auto mb-8 shadow-inner">3</div>
+                            <h3 className="text-xl font-black text-slate-900 mb-4 uppercase tracking-tight">Terima Data</h3>
+                            <p className="text-slate-500 leading-relaxed font-medium">Selesaikan pembayaran PNBP, dan data akan dikirimkan melalui sistem atau email.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* --- SECTION 3: KATALOG LAYANAN (Dinamis dari Database) --- */}
+            <section id="catalogs" className="py-24 bg-slate-50">
+                <div className="container mx-auto px-6 text-center">
+                    <div className="mb-16">
+                        <h2 className="text-3xl font-black text-slate-900 tracking-tight uppercase">Katalog Layanan & Tarif</h2>
+                        <p className="text-slate-500 font-medium mt-2 italic text-sm">Berdasarkan PP No. 47 Tahun 2018 tentang Jenis dan Tarif PNBP yang berlaku pada BMKG.</p>
+                    </div>
+                    
+                    <div className="bg-white rounded-[3rem] shadow-xl shadow-slate-200/50 overflow-hidden border border-slate-100">
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-left">
+                                <thead>
+                                    <tr className="bg-slate-50/50 text-slate-400 uppercase text-[10px] font-black tracking-[0.2em]">
+                                        <th className="p-8 border-b">Jenis Informasi</th>
+                                        <th className="p-8 border-b text-center">Satuan</th>
+                                        <th className="p-8 border-b text-right">Tarif PNBP</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody className="divide-y divide-slate-50">
+                                    {catalogs && catalogs.length > 0 ? catalogs.map((item, index) => (
+                                        <tr key={index} className="hover:bg-blue-50/30 transition-colors group">
+                                            <td className="p-8">
+                                                <div className="font-bold text-slate-800 leading-snug group-hover:text-blue-700 transition-colors">{item.info_type}</div>
+                                                <div className="text-[10px] font-black text-slate-400 mt-1 uppercase tracking-tighter">{item.category}</div>
+                                            </td>
+                                            <td className="p-8 text-slate-500 text-center font-bold text-sm italic">{item.unit}</td>
+                                            <td className="p-8 font-black text-right text-emerald-600 text-lg">
+                                                Rp {new Intl.NumberFormat('id-ID').format(item.price)}
+                                            </td>
+                                        </tr>
+                                    )) : (
+                                        <tr>
+                                            <td colSpan="3" className="p-20 text-center text-slate-400 font-bold uppercase tracking-widest text-xs italic">Katalog data belum tersedia.</td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </section>
-            </main>
+                </div>
+            </section>
 
-            {/* Footer Sederhana */}
-            <footer className="mt-12 py-8 bg-gray-100 text-center text-gray-500 text-sm border-t border-gray-200">
-                &copy; 2026 Stasiun Meteorologi Radin Inten II - BMKG.
+            {/* --- SECTION 4: FAQ (Statis / Hardcoded) --- */}
+            <section id="faq" className="py-32 bg-white">
+                <div className="container mx-auto px-6 max-w-3xl">
+                    <div className="text-center mb-16">
+                        <span className="text-blue-600 font-black uppercase tracking-[0.3em] text-[10px]">Pusat Bantuan</span>
+                        <h2 className="text-4xl font-black text-slate-900 mt-4 tracking-tight">Pertanyaan Umum</h2>
+                    </div>
+
+                    <div className="space-y-4">
+                        <details className="bg-slate-50 p-6 rounded-[2rem] group cursor-pointer border border-transparent hover:border-blue-100 transition-all open:bg-white open:shadow-xl open:shadow-blue-100/20">
+                            <summary className="font-bold text-slate-900 flex justify-between items-center list-none">
+                                <span>Bagaimana cara mendapatkan tarif Rp 0 (Gratis) untuk mahasiswa?</span>
+                                <span className="transition-transform duration-300 group-open:rotate-180 text-blue-600">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
+                                </span>
+                            </summary>
+                            <p className="text-slate-600 mt-4 leading-relaxed font-medium pt-4 border-t border-slate-100">
+                                Tarif nol rupiah diberikan untuk penelitian pendidikan. Anda wajib melampirkan Surat Pengantar dari Dekan/Kampus yang menyatakan data tersebut tidak digunakan secara komersial.
+                            </p>
+                        </details>
+
+                        <details className="bg-slate-50 p-6 rounded-[2rem] group cursor-pointer border border-transparent hover:border-blue-100 transition-all open:bg-white open:shadow-xl open:shadow-blue-100/20">
+                            <summary className="font-bold text-slate-900 flex justify-between items-center list-none">
+                                <span>Berapa lama masa aktif link unduh data?</span>
+                                <span className="transition-transform duration-300 group-open:rotate-180 text-blue-600">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
+                                </span>
+                            </summary>
+                            <p className="text-slate-600 mt-4 leading-relaxed font-medium pt-4 border-t border-slate-100">
+                                Data meteorologi yang kami kirimkan akan aktif selama 3 hari kalender. Pastikan Anda segera mengunduh file setelah menerima transaksi selesai.
+                            </p>
+                        </details>
+
+                        <details className="bg-slate-50 p-6 rounded-[2rem] group cursor-pointer border border-transparent hover:border-blue-100 transition-all open:bg-white open:shadow-xl open:shadow-blue-100/20">
+                            <summary className="font-bold text-slate-900 flex justify-between items-center list-none">
+                                <span>Apakah pembayaran bisa dilakukan melalui transfer ATM?</span>
+                                <span className="transition-transform duration-300 group-open:rotate-180 text-blue-600">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
+                                </span>
+                            </summary>
+                            <p className="text-slate-600 mt-4 leading-relaxed font-medium pt-4 border-t border-slate-100">
+                                Bisa. Pembayaran tarif PNBP menggunakan Kode Billing (Simponi) yang dapat dibayarkan melalui Bank persepsi, ATM, Kantor Pos, maupun aplikasi M-Banking.
+                            </p>
+                        </details>
+                    </div>
+
+                    <div className="mt-12 text-center">
+                        <Link href="/faq" className="text-[10px] font-black text-blue-600 hover:text-blue-800 uppercase tracking-widest border-b-2 border-blue-50 pb-1 transition-colors">
+                            Lihat Semua FAQ & Tanya Admin →
+                        </Link>
+                    </div>
+                </div>
+            </section>
+
+            {/* --- FOOTER --- */}
+            <footer className="py-16 bg-slate-900 text-white border-t border-slate-800">
+                <div className="container mx-auto px-6 text-center">
+                    <div className="mb-8">
+                        <h4 className="text-xl font-black uppercase tracking-[0.3em] mb-2 text-blue-500">PTSP BMKG LAMPUNG</h4>
+                        <p className="text-slate-500 font-medium">Stasiun Meteorologi Radin Inten II - Branti</p>
+                    </div>
+                    <div className="text-[9px] text-slate-600 font-black uppercase tracking-[0.2em] pt-8 border-t border-slate-800/50">
+                        &copy; 2026 Badan Meteorologi Klimatologi dan Geofisika. Semua Hak Dilindungi.
+                    </div>
+                </div>
             </footer>
         </div>
     );
-};
-
-export default LandingPage;
+}
