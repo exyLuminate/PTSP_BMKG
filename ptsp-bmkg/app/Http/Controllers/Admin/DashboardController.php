@@ -11,34 +11,40 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Ambil data per bulan untuk tahun ini [cite: 134, 188, 238]
-        $monthlyStats = DataRequest::select(
-                DB::raw('MONTH(created_at) as month'), 
-                DB::raw('count(*) as total')
-            )
+        // 1. Ambil data tren bulanan (Tetap sama, namun menggunakan selectRaw agar lebih bersih)
+        $monthlyStats = DataRequest::selectRaw('MONTH(created_at) as month, COUNT(*) as total')
             ->whereYear('created_at', date('Y'))
             ->groupBy('month')
             ->orderBy('month')
             ->get();
 
-        // Statistik perbandingan status untuk Pie Chart [cite: 135, 190-191, 239]
+        // 2. Ambil statistik semua status dalam satu query (Lebih cepat)
+        $statusCounts = DataRequest::select('status', DB::raw('count(*) as total'))
+            ->groupBy('status')
+            ->pluck('total', 'status');
+
+        // 3. Susun paymentStats sesuai status baru yang ada di RequestDetail.jsx
         $paymentStats = [
-            'paid' => DataRequest::where('status', 'paid')->count(),
-            'expired' => DataRequest::where('status', 'expired')->count(),
-            'on_process' => DataRequest::where('status', 'on_process')->count(),
-            'ready' => DataRequest::where('status', 'ready')->count(),
+            'on_process'         => $statusCounts['on_process'] ?? 0,
+            'waiting_payment'    => $statusCounts['waiting_payment'] ?? 0,
+            'verifikasi_payment' => $statusCounts['verifikasi_payment'] ?? 0,
+            'paid'               => $statusCounts['paid'] ?? 0,
+            'done'               => $statusCounts['done'] ?? 0,
+            'expired'            => $statusCounts['expired'] ?? 0,
+            'rejected'           => $statusCounts['rejected'] ?? 0,
         ];
 
-        // Ringkasan angka di atas dashboard
+        // 4. Ringkasan angka di atas dashboard
         $summary = [
             'total_requests' => DataRequest::count(),
-            'pending_verification' => DataRequest::where('status', 'on_process')->count(),
+            // Butuh Verifikasi = Berkas Baru (on_process) + Bukti Bayar Baru (verifikasi_payment)
+            'pending_verification' => ($paymentStats['on_process'] + $paymentStats['verifikasi_payment']),
         ];
 
         return Inertia::render('Admin/Dashboard', [
             'monthlyStats' => $monthlyStats,
             'paymentStats' => $paymentStats,
-            'summary' => $summary,
+            'summary'      => $summary,
         ]);
     }
 }
