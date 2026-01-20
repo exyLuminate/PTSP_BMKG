@@ -15,10 +15,10 @@ const LandingPage = () => {
         <div className="min-h-screen bg-gray-50 font-sans text-gray-900">
             <Head title="PTSP BMKG - Beranda" />
 
-            {/* Hero Section [cite: 174, 208] */}
+            {/* Hero Sectio*/}
             <header className="bg-[#1e3a8a] text-white py-16 px-6 text-center shadow-lg">
                 <h1 className="text-4xl md:text-5xl font-extrabold mb-4">Sistem Informasi PTSP BMKG</h1>
-                <p className="text-xl md:text-2xl mb-10 text-blue-100">Stasiun Meteorologi Radin Inten II [cite: 7]</p>
+                <p className="text-xl md:text-2xl mb-10 text-blue-100">Stasiun Meteorologi Radin Inten II</p>
                 
                 {/* Dua Tombol Utama  */}
                 <div className="flex flex-col md:flex-row justify-center gap-6">
@@ -38,7 +38,7 @@ const LandingPage = () => {
             </header>
 
             <main className="max-w-6xl mx-auto py-12 px-6">
-                {/* Informasi Jam Operasional & Panduan [cite: 39, 111, 212, 213] */}
+                {/* Informasi Jam Operasional & Panduan*/}
                 <div className="grid md:grid-cols-2 gap-8 mb-16">
                     <div className="bg-amber-50 p-8 rounded-2xl border border-amber-200 flex items-start space-x-4 shadow-sm">
                         <div className="text-amber-600">
@@ -48,10 +48,9 @@ const LandingPage = () => {
                         </div>
                         <div>
                             <h2 className="text-2xl font-bold text-amber-900 mb-2">Jam Operasional</h2>
-                            <p className="text-amber-800 font-medium text-lg">Senin - Jumat: 08:00 - 16:00 WIB [cite: 39, 170]</p>
+                            <p className="text-amber-800 font-medium text-lg">Senin - Jumat: 08:00 - 16:00 WIB</p>
                             <p className="text-sm mt-3 text-amber-700 leading-relaxed italic">
-                                *Sistem tetap dapat menerima permohonan kapan saja, namun pengecekan tiket hanya diproses pada jam kerja. [cite: 110, 111]
-                            </p>
+                                *Sistem tetap dapat menerima permohonan kapan saja, namun pengecekan tiket hanya diproses pada jam kerja.</p>
                         </div>
                     </div>
 
@@ -69,16 +68,16 @@ const LandingPage = () => {
                                 download 
                                 className="inline-flex items-center text-blue-700 font-bold hover:text-blue-900 underline decoration-2 underline-offset-4"
                             >
-                                Unduh PDF Panduan [cite: 103, 178]
+                                Unduh PDF Panduan
                             </a>
                         </div>
                     </div>
                 </div>
 
-                {/* Tabel Tarif [cite: 194, 195] */}
+                {/* Tabel Tarif */}
                 <section className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
                     <div className="bg-gray-50 p-8 border-b border-gray-200">
-                        <h2 className="text-3xl font-bold text-gray-800">Daftar Informasi & Tarif [cite: 194]</h2>
+                        <h2 className="text-3xl font-bold text-gray-800">Daftar Informasi & Tarif</h2>
                     </div>
                     <div className="overflow-x-auto">
                         <table className="w-full text-left">
@@ -105,7 +104,7 @@ const LandingPage = () => {
 
             {/* Footer Sederhana */}
             <footer className="mt-12 py-8 bg-gray-100 text-center text-gray-500 text-sm border-t border-gray-200">
-                &copy; 2026 Stasiun Meteorologi Radin Inten II - BMKG. [cite: 2, 7]
+                &copy; 2026 Stasiun Meteorologi Radin Inten II - BMKG.
             </footer>
         </div>
     );

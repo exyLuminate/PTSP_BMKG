@@ -9,7 +9,7 @@ const FormPermohonan = ({ katalog }) => {
         nik: '', // NIK akan dienkripsi di backend 
         data_catalog_id: '',
         description: '',
-        password: '', // Password dibuat user untuk akses tracking nanti [cite: 17, 98]
+        password: '', // Password dibuat user untuk akses tracking nanti 
         ktp: null,
         surat_permohonan: null,
     });
@@ -51,7 +51,7 @@ const FormPermohonan = ({ katalog }) => {
                         <label className="block text-sm font-semibold text-gray-700 mb-1">Jenis Data yang Diminta</label>
                         <select value={data.data_catalog_id} onChange={e => setData('data_catalog_id', e.target.value)} className="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" required>
                             <option value="">Pilih Jenis Informasi...</option>
-                            {/* Data ini nanti dikirim dari controller [cite: 196] */}
+                            {/* Data ini nanti dikirim dari controller */}
                             <option value="1">Info Meteorologi Asuransi - Rp 175.000</option>
                             <option value="2">Data Radar Cuaca - Rp 70.000</option>
                         </select>
@@ -62,7 +62,7 @@ const FormPermohonan = ({ katalog }) => {
                         <textarea value={data.description} onChange={e => setData('description', e.target.value)} className="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" rows="3" placeholder="Contoh: Data curah hujan bulan Januari 2024 di wilayah..."></textarea>
                     </div>
 
-                    {/* Upload Berkas - Wajib PDF Max 2MB [cite: 25, 38, 117] */}
+                    {/* Upload Berkas - Wajib PDF Max 2MB */}
                     <div className="grid md:grid-cols-2 gap-6">
                         <div>
                             <label className="block text-sm font-semibold text-gray-700 mb-1">Upload KTP (PDF, Max 2MB)</label>
@@ -74,7 +74,7 @@ const FormPermohonan = ({ katalog }) => {
                         </div>
                     </div>
 
-                    {/* Password untuk Akses Tracking [cite: 17, 24] */}
+                    {/* Password untuk Akses Tracking */}
                     <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
                         <label className="block text-sm font-bold text-blue-900 mb-1">Buat Password Akses</label>
                         <p className="text-xs text-blue-700 mb-2 italic">*Penting: Password ini digunakan bersama Kode Tiket untuk melihat status data Anda nanti.</p>
