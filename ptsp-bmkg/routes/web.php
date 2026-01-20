@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\RequestManagementController;
+use App\Http\Controllers\FileStreamController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -32,6 +33,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
     Route::get('/requests', [RequestManagementController::class, 'index'])->name('admin.requests.index');
     Route::get('/requests/{id}', [RequestManagementController::class, 'show'])->name('admin.requests.show');
     Route::patch('/requests/{id}', [RequestManagementController::class, 'update'])->name('admin.requests.update');
+    Route::get('/admin/requests/{id}/file/{type}', [FileStreamController::class, 'streamForAdmin'])->name('admin.file.stream');
 });
 
 require __DIR__.'/auth.php';
