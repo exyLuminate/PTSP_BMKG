@@ -36,8 +36,8 @@ class DataRequestController extends Controller
 
         $ticketCode = 'PTSP-' . strtoupper(Str::random(6));
 
-        $ktpPath = $request->file('ktp')->store('documents/ktp');
-        $letterPath = $request->file('letter')->store('documents/letters');
+        $ktpPath = $request->file('ktp')->store('private/ktp');
+        $letterPath = $request->file('letter')->store('private/letters');
 
         DataRequest::create([
             'ticket_code' => $ticketCode,

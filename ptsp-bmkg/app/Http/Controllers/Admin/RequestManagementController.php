@@ -3,21 +3,23 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Request as DataRequest;
-use App\Models\ActivityLog; //
+use App\Models\DataRequest; // Sesuaikan jika nama filenya DataRequest.php
+use App\Models\ActivityLog;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class RequestManagementController extends Controller
 {
- public function index(Request $request)
+    public function index(Request $request)
     {
         $query = DataRequest::with('catalog');
 
         if ($request->search) {
             $query->where('ticket_code', 'like', '%' . $request->search . '%')
-                  ->orWhere('nik', $request->search); 
+                  // Catatan: Pencarian NIK di database akan sulit jika dienkripsi.
+                  // Sementara fokus ke ticket_code atau nama.
+                  ->orWhere('name', 'like', '%' . $request->search . '%'); 
         }
 
         if ($request->status) {
@@ -42,28 +44,32 @@ class RequestManagementController extends Controller
     public function update(Request $request, $id)
     {
         $dataRequest = DataRequest::findOrFail($id);
-        $oldStatus = $dataRequest->status; // Simpan status lama untuk log
+        $oldStatus = $dataRequest->status;
 
-        $validated = $request->validate([
+        $request->validate([
             'status' => 'required|in:on_process,waiting_payment,verifikasi_payment,paid,expired,done,rejected',
             'admin_note' => 'nullable|string',
             'va_file' => 'nullable|file|mimes:pdf|max:2048', 
             'result_file' => 'nullable|file|mimes:pdf,zip|max:10240', 
         ]);
 
-        // Logic file VA/Billing
-        if ($request->status === 'waiting_payment') {
-            if ($request->hasFile('va_file')) {
-                $pathVa = $request->file('va_file')->store('private/billing');
-                $dataRequest->va_file_path = $pathVa;
+        // LOGIKA FILE VA / BILLING
+        if ($request->hasFile('va_file')) {
+            // Hapus file lama jika Admin upload ulang
+            if ($dataRequest->va_file_path) {
+                Storage::disk('local')->delete($dataRequest->va_file_path);
             }
-
-            if ($request->hasFile('result_file')) {
-                $pathResult = $request->file('result_file')->store('private/results');
-                $dataRequest->result_file_path = $pathResult;
-            }
-
+            $dataRequest->va_file_path = $request->file('va_file')->store('private/billing');
             $dataRequest->va_expired_at = now()->addDays(7);
+        }
+
+        // LOGIKA FILE HASIL DATA
+        if ($request->hasFile('result_file')) {
+            // Hapus file lama jika Admin upload ulang
+            if ($dataRequest->result_file_path) {
+                Storage::disk('local')->delete($dataRequest->result_file_path);
+            }
+            $dataRequest->result_file_path = $request->file('result_file')->store('private/results');
         }
 
         if ($request->status === 'paid') {
@@ -75,15 +81,12 @@ class RequestManagementController extends Controller
         $dataRequest->admin_note = $request->admin_note;
         $dataRequest->save();
 
-        // --- PENCATATAN LOG AKTIVITAS ---
+        // LOG AKTIVITAS
         ActivityLog::record('update_request_status', [
             'ticket_code' => $dataRequest->ticket_code,
-            'nik'         => $dataRequest->nik,
-            'old_status'  => $oldStatus,
             'new_status'  => $dataRequest->status,
             'has_billing' => $request->hasFile('va_file') ? 'Ya' : 'Tidak',
             'has_result'  => $request->hasFile('result_file') ? 'Ya' : 'Tidak',
-            'note'        => $dataRequest->admin_note ?? '-'
         ]);
 
         return redirect()->back()->with('success', 'Status permohonan berhasil diperbarui.');

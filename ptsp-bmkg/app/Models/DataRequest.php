@@ -22,9 +22,11 @@ class DataRequest extends Model
         'quantity',
         'ktp_path',
         'letter_path',
+        'payment_proof_path', // <--- TAMBAHKAN INI (Untuk Bukti Bayar User)
         'data_catalog_id',
         'status',
         'va_number',
+        'va_file_path',       // <--- TAMBAHKAN INI (Untuk PDF Billing Admin)
         'result_file_path',
         'admin_note',
         'ready_at',
@@ -43,6 +45,9 @@ class DataRequest extends Model
         return $this->belongsTo(DataCatalog::class, 'data_catalog_id');
     }
 
+    /**
+     * Accessor untuk NIK: Otomatis Dekripsi saat dipanggil
+     */
     public function getNikAttribute($value)
     {
         try {
