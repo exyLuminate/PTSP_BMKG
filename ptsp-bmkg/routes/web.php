@@ -29,6 +29,7 @@ Route::prefix('cek-status')->name('status.')->group(function () {
     Route::get('/', [StatusController::class, 'index'])->name('index');
     Route::post('/cari', [StatusController::class, 'search'])->name('search');
     Route::post('/detail', [StatusController::class, 'show'])->name('show');
+    Route::post('/cek-status/verify', [StatusController::class, 'verifyPassword'])->name('status.verify_password');
 });
 
 Route::get('/', function () {

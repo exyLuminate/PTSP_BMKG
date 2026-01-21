@@ -29,6 +29,40 @@ class StatusController extends Controller
             'search_nik' => $request->nik
         ]);
     }
+
+    public function show(Request $request)
+    {
+        $ticketCode = $request->input('ticket');
+
+        $requestData = DataRequest::with('catalog')
+            ->where('ticket_code', $ticketCode)
+            ->first();
+
+        if (!$requestData) {
+            return back()->withErrors(['message' => 'Tiket tidak ditemukan.']);
+        }
+        return Inertia::render('User/DetailStatus', [
+            'requestData' => $requestData
+        ]);
+    }
+
+    public function verifyPassword(Request $request)
+    {
+        $request->validate([
+            'ticket' => 'required|exists:requests,ticket_code',
+            'password' => 'required',
+        ]);
+
+        $requestData = DataRequest::where('ticket_code', $request->ticket)->first();
+
+        if ($request->password !== $requestData->access_password) {
+            return back()->withErrors([
+                'password' => 'Password yang Anda masukkan salah.'
+            ]);
+        }
+
+        return back();
+    }
     
     public function uploadProof(Request $request, $ticket)
     {
