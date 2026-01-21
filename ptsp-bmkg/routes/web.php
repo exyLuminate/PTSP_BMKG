@@ -24,12 +24,15 @@ Route::prefix('permohonan')->name('permohonan.')->group(function () {
 
 Route::get('/permohonan/download-bukti/{ticket}', [DataRequestController::class, 'downloadProof'])
     ->name('permohonan.download_proof');
+Route::get('/permohonan/file/{id}/{type}', [FileStreamController::class, 'streamForUser'])
+    ->name('permohonan.file.stream');
 
 Route::prefix('cek-status')->name('status.')->group(function () {
     Route::get('/', [StatusController::class, 'index'])->name('index');
-    Route::post('/cari', [StatusController::class, 'search'])->name('search');
-    Route::post('/detail', [StatusController::class, 'show'])->name('show');
-    Route::post('/cek-status/verify', [StatusController::class, 'verifyPassword'])->name('status.verify_password');
+    Route::get('/cari', [StatusController::class, 'search'])->name('search'); // Berubah ke GET
+    Route::get('/detail/{ticket}', [StatusController::class, 'show'])->name('show'); // Berubah ke GET + Param
+    Route::post('/verify', [StatusController::class, 'verifyPassword'])->name('verify_password');
+    Route::post('/upload-proof/{ticket}', [StatusController::class, 'uploadProof'])->name('upload_proof');
 });
 
 Route::get('/', function () {

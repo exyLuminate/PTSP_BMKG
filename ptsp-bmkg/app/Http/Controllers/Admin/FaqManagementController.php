@@ -13,12 +13,13 @@ class FaqManagementController extends Controller
     /**
      * Menampilkan daftar semua FAQ untuk Admin
      */
-    public function index()
-    {
-        return Inertia::render('Admin/FaqList', [
-            'faqs' => FaqMessage::orderBy('created_at', 'desc')->get()
-        ]);
-    }
+   public function index()
+{
+    return Inertia::render('Admin/FaqList', [
+        // Ubah ->get() menjadi ->paginate(angka_per_halaman)
+        'faqs' => FaqMessage::orderBy('created_at', 'desc')->paginate(10)
+    ]);
+}
 
     /**
      * Menyimpan pertanyaan baru (biasanya dari sisi publik)
