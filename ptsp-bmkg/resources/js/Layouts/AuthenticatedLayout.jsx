@@ -61,6 +61,13 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Audit Trail
                                 </NavLink>
+
+                                <NavLink
+                                    href={route('admin.reports.index')}
+                                    active={route().current('admin.reports.*')}
+                                >
+                                    Laporan
+                                </NavLink>
                             </div>
                         </div>
 
@@ -126,6 +133,10 @@ export default function AuthenticatedLayout({ header, children }) {
 
                         <ResponsiveNavLink href={route('admin.logs.index')} active={route().current('admin.logs.*')}>
                             Audit Trail
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink href={route('admin.logs.index')} active={route().current('admin.reports.*')}>
+                            Laporan
                         </ResponsiveNavLink>
                     </div>
 
