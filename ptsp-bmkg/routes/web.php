@@ -13,6 +13,23 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\User\DataRequestController;
+use App\Http\Controllers\User\StatusController;
+
+Route::prefix('permohonan')->name('permohonan.')->group(function () {
+    Route::get('/', [DataRequestController::class, 'create'])->name('create');
+    Route::post('/store', [DataRequestController::class, 'store'])->name('store');
+    Route::get('/berhasil/{ticket}', [DataRequestController::class, 'success'])->name('success');
+});
+
+Route::get('/permohonan/download-bukti/{ticket}', [DataRequestController::class, 'downloadProof'])
+    ->name('permohonan.download_proof');
+
+Route::prefix('cek-status')->name('status.')->group(function () {
+    Route::get('/', [StatusController::class, 'index'])->name('index');
+    Route::post('/cari', [StatusController::class, 'search'])->name('search');
+    Route::post('/detail', [StatusController::class, 'show'])->name('show');
+});
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [

@@ -72,7 +72,7 @@ export default function LandingPage({ catalogs, auth }) {
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                                     </svg>
                                 </Link>
-                                <Link href="/tracking" className="bg-white text-slate-700 px-10 py-4 rounded-2xl hover:bg-slate-50 font-black text-[10px] uppercase tracking-widest border border-slate-200 shadow-sm transition-all flex items-center gap-2">
+                                <Link href="/cek-status" className="bg-white text-slate-700 px-10 py-4 rounded-2xl hover:bg-slate-50 font-black text-[10px] uppercase tracking-widest border border-slate-200 shadow-sm transition-all flex items-center gap-2">
                                     Cek Status Tiket
                                 </Link>
                             </div>
