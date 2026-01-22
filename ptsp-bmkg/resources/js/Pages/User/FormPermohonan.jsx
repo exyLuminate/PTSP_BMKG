@@ -28,7 +28,6 @@ export default function FormPermohonan({ catalogs }) {
         <div className="min-h-screen bg-slate-50 py-12 px-6 text-slate-900 font-sans">
             <Head title="Ajukan Permohonan - PTSP BMKG" />
             
-            {/* Navigasi Kembali */}
             <div className="max-w-3xl mx-auto mb-8">
                 <Link href="/" className="inline-flex items-center gap-3 text-[10px] font-black text-slate-400 hover:text-blue-600 uppercase tracking-[0.2em] transition-all group">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-3 h-3 transition-transform group-hover:-translate-x-1">
@@ -39,7 +38,6 @@ export default function FormPermohonan({ catalogs }) {
             </div>
 
             <div className="max-w-3xl mx-auto bg-white rounded-[3.5rem] shadow-2xl shadow-blue-100/50 border border-slate-100 overflow-hidden">
-                {/* Header Section */}
                 <div className="bg-gradient-to-r from-blue-600 to-blue-500 p-12 text-white relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 blur-3xl rounded-full -mr-32 -mt-32"></div>
                     <div className="relative z-10">
@@ -49,7 +47,6 @@ export default function FormPermohonan({ catalogs }) {
                 </div>
 
                 <form onSubmit={handleSubmit} className="p-12 space-y-10">
-                    {/* Data Personal */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                         <div className="group">
                             <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 group-focus-within:text-blue-600 transition-colors">Nama Lengkap</label>
@@ -66,7 +63,6 @@ export default function FormPermohonan({ catalogs }) {
                         <input type="text" maxLength="16" value={data.nik} onChange={e => setData('nik', e.target.value)} className="w-full mt-3 bg-slate-50 border-none rounded-[1.5rem] py-5 px-8 focus:ring-4 focus:ring-blue-500/10 font-black text-sm tracking-[0.2em] text-slate-900 shadow-inner transition-all" placeholder="0000000000000000" required />
                     </div>
 
-                    {/* Katalog & Quantity */}
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
                         <div className="md:col-span-3 group">
                             <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 group-focus-within:text-blue-600 transition-colors">Jenis Layanan Data</label>
@@ -95,13 +91,11 @@ export default function FormPermohonan({ catalogs }) {
                         </div>
                     </div>
 
-                    {/* Deskripsi Permintaan */}
                     <div className="group">
                         <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 group-focus-within:text-blue-600 transition-colors">Deskripsi Permintaan (Lokasi & Periode)</label>
                         <textarea value={data.description} onChange={e => setData('description', e.target.value)} className="w-full mt-3 bg-slate-50 border-none rounded-[2rem] py-5 px-8 focus:ring-4 focus:ring-blue-500/10 font-bold text-sm text-slate-900 shadow-inner transition-all h-32 resize-none" placeholder="CONTOH: DATA CURAH HUJAN WILAYAH BANDAR LAMPUNG PERIODE JANUARI 2024..." required></textarea>
                     </div>
 
-                    {/* Berkas Section */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                         <div className="p-8 bg-slate-50 rounded-[2rem] border border-slate-100 shadow-sm">
                             <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-4">KTP (PDF, MAX 4MB)</label>
@@ -113,7 +107,6 @@ export default function FormPermohonan({ catalogs }) {
                         </div>
                     </div>
 
-                    {/* Footer Info & Total */}
                     <div className="bg-blue-50 rounded-[2.5rem] p-10 border border-blue-100 space-y-6">
                         <div className="flex justify-between items-center border-b border-blue-200 pb-6">
                             <span className="text-[11px] font-black text-blue-900 uppercase tracking-[0.2em]">Estimasi Total PNBP</span>
