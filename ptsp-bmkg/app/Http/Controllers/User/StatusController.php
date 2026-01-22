@@ -16,15 +16,12 @@ class StatusController extends Controller
 
     public function search(Request $request)
     {
-        // Validasi NIK (karena GET, data ada di query string)
         $request->validate([
             'nik' => 'required|digits:16',
         ]);
 
         $searchNik = $request->query('nik');
 
-        // Jika NIK di-encrypt dan menggunakan Accessor, kita harus menggunakan filter (Data Kecil)
-        // Jika data sudah ribuan, disarankan gunakan teknik 'nik_hash' yang kita bahas tadi.
         $results = DataRequest::with('catalog')->get()->filter(function ($item) use ($searchNik) {
             return $item->nik === $searchNik;
         });
@@ -37,7 +34,6 @@ class StatusController extends Controller
 
     public function show($ticket)
     {
-        // Mencari data berdasarkan parameter {ticket} di URL
         $requestData = DataRequest::with('catalog')
             ->where('ticket_code', $ticket)
             ->first();
@@ -47,7 +43,7 @@ class StatusController extends Controller
         }
 
         return Inertia::render('User/DetailStatus', [
-            'request_data' => $requestData // Pastikan nama prop sama dengan di DetailStatus.jsx
+            'request_data' => $requestData 
         ]);
     }
 
@@ -66,7 +62,6 @@ class StatusController extends Controller
             ]);
         }
 
-        // Jika benar, hanya kembali (onSuccess di React akan mengubah state isVerified)
         return back();
     }
     
@@ -78,7 +73,6 @@ class StatusController extends Controller
 
         $data = DataRequest::where('ticket_code', $ticket)->firstOrFail();
 
-        // Gunakan folder private agar aman
         $path = $request->file('payment_proof')->store('private/proofs');
 
         $data->update([

@@ -8,7 +8,6 @@ export default function CekStatus({ results, search_nik }) {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        // Menggunakan router.get agar query muncul di URL: /cek-status/cari?nik=...
         router.get(route('status.search'), { nik: data.nik }, {
             preserveState: true,
             replace: true
@@ -16,12 +15,6 @@ export default function CekStatus({ results, search_nik }) {
     };
 
     const handleViewDetail = (ticketCode) => {
-        /**
-         * PERBAIKAN DI SINI:
-         * Gunakan objek { ticket: ticketCode } agar Ziggy menempatkan 
-         * ticketCode ke dalam variabel {ticket} di web.php, 
-         * bukan menjadikannya query string (?ticket=...)
-         */
         router.get(route('status.show', { ticket: ticketCode }));
     };
 

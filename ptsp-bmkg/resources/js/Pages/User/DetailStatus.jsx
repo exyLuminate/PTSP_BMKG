@@ -43,10 +43,9 @@ export default function DetailStatus({ request_data }) {
     const info = getProgressInfo(request_data.status);
 
     return (
-        <div className="min-h-screen bg-slate-50 py-12 px-6 font-sans">
+        <div className="min-h-screen bg-slate-50 py-12 px:6 font-sans">
             <Head title={`Detail Tiket ${request_data.ticket_code}`} />
 
-            {/* Modal Verifikasi Password */}
             {!isVerified && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-6">
                     <div className="bg-white w-full max-w-md rounded-[3rem] p-12 shadow-2xl text-center">
@@ -63,8 +62,19 @@ export default function DetailStatus({ request_data }) {
 
             <div className={`max-w-4xl mx-auto transition-all duration-700 ${isVerified ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
                 
+                <div className="mb-8">
+                    <button 
+                        onClick={() => window.history.back()} 
+                        className="inline-flex items-center gap-3 text-[10px] font-black text-slate-400 hover:text-blue-600 uppercase tracking-[0.2em] transition-all group"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-3 h-3 transition-transform group-hover:-translate-x-1">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                        </svg>
+                        Kembali ke Daftar Tiket
+                    </button>
+                </div>
+
                 <div className="bg-white rounded-[3.5rem] shadow-2xl border border-slate-100 overflow-hidden">
-                    {/* Header & Progress Bar */}
                     <div className="p-12 border-b border-slate-50 bg-gradient-to-b from-slate-50/50 text-center">
                         <h1 className="text-sm font-black text-blue-600 uppercase tracking-[0.3em] mb-4">Status Permohonan</h1>
                         <div className={`text-4xl font-black uppercase tracking-tighter mb-8 leading-none ${request_data.status === 'rejected' ? 'text-red-600' : 'text-slate-900'}`}>
@@ -84,7 +94,6 @@ export default function DetailStatus({ request_data }) {
                                         ${info.step >= s ? 'bg-blue-600 text-white shadow-blue-200 shadow-lg' : 
                                           request_data.status === 'rejected' ? 'bg-red-50 text-red-200 border-2 border-red-100' : 'bg-white border-2 border-slate-100 text-slate-300'}`}>
                                         
-                                        {/* Icons Logic */}
                                         {s === 1 && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>}
                                         {s === 2 && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.051-.659-1.172-.879-1.172-2.303 0-3.182 1.172-.879 3.07-.879 4.242 0L15 8.818M3.75 21.75h16.5a2.25 2.25 0 0 0 2.25-2.25V4.5a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v15a2.25 2.25 0 0 0 2.25 2.25Z" /></svg>}
                                         {s === 3 && <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>}
@@ -99,7 +108,6 @@ export default function DetailStatus({ request_data }) {
                     </div>
 
                     <div className="p-12 grid grid-cols-1 md:grid-cols-2 gap-12">
-                        {/* Kolom Kiri: Rincian Data */}
                         <div className="space-y-8">
                             <div>
                                 <label className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em] block mb-2">Jenis Informasi</label>
@@ -111,11 +119,9 @@ export default function DetailStatus({ request_data }) {
                             </div>
                         </div>
 
-                        {/* Kolom Kanan: ACTION CENTER USER */}
                         <div className="bg-slate-900 rounded-[2.5rem] p-10 text-white shadow-xl">
                             <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-400 mb-6 "> Langkah Selanjutnya</h4>
                             
-                            {/* CASE 1: DITOLAK (MENAMPILKAN CATATAN ADMIN) */}
                             {request_data.status === 'rejected' && (
                                 <div className="space-y-6 animate-in fade-in duration-700">
                                     <div className="bg-red-500/10 border border-red-500/20 p-6 rounded-2xl">
@@ -130,7 +136,6 @@ export default function DetailStatus({ request_data }) {
                                 </div>
                             )}
 
-                            {/* CASE 2: Menunggu Pembayaran */}
                             {request_data.status === 'waiting_payment' && (
                                 <div className="space-y-6">
                                     <p className="text-sm font-medium opacity-80 leading-relaxed">Silakan unduh Kode Billing/VA dan lakukan pembayaran:</p>
@@ -144,7 +149,6 @@ export default function DetailStatus({ request_data }) {
                                 </div>
                             )}
 
-                            {/* CASE 3: Selesai / Paid */}
                             {request_data.status === 'paid' && (
                                 <div className="space-y-6 text-center">
                                     <p className="text-sm font-medium">Pembayaran Lunas! Silakan unduh hasil data Anda:</p>
@@ -152,7 +156,6 @@ export default function DetailStatus({ request_data }) {
                                 </div>
                             )}
 
-                            {/* Status Lainnya */}
                             {request_data.status === 'on_process' && <p className="text-sm opacity-60 italic text-center py-10">Berkas sedang diverifikasi Admin...</p>}
                             {request_data.status === 'verifikasi_payment' && <p className="text-sm opacity-60 italic text-center py-10">Bukti bayar sedang dicek Bendahara...</p>}
                         </div>
@@ -163,7 +166,6 @@ export default function DetailStatus({ request_data }) {
     );
 }
 
-// Komponen Preview PDF
 function FilePreview({ label, id, type, password }) {
     const streamUrl = route('permohonan.file.stream', { id, type, password });
     return (
