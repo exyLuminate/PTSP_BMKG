@@ -56,6 +56,21 @@ export default function ActivityLogList({ auth, logs }) {
                                                     )) : <span className="italic text-slate-400">Tidak ada detail</span>}
                                                 </div>
                                             </td>
+
+                                            {/* Kolom Admin + Info Teknis */}
+                                            <td className="px-6 py-4">
+                                                <div className="flex flex-col">
+                                                    <span className="text-sm font-bold text-slate-700">{log.user?.name || 'System'}</span>
+                                                    <div className="flex items-center gap-2 mt-1">
+                                                        <span className="text-[9px] font-medium text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">
+                                                            IP: {log.ip_address}
+                                                        </span>
+                                                        <span className="text-[9px] font-medium text-slate-400 italic truncate max-w-[150px]" title={log.user_agent}>
+                                                            {log.user_agent?.includes('Windows') ? 'Windows' : 'Mobile/Other'}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </td>
                                         </tr>
                                     ))
                                 ) : (

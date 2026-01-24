@@ -4,91 +4,51 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\FaqMessage;
-use App\Models\ActivityLog; // Import model Log
+use App\Models\ActivityLog; 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class FaqManagementController extends Controller
 {
     /**
-     * Menampilkan daftar semua FAQ untuk Admin
+     * Menampilkan daftar FAQ untuk Admin
+     * Sinkron dengan: faqs.data.map & faqs.links di React
      */
-   public function index()
-{
-    return Inertia::render('Admin/FaqList', [
-        // Ubah ->get() menjadi ->paginate(angka_per_halaman)
-        'faqs' => FaqMessage::orderBy('created_at', 'desc')->paginate(10)
-    ]);
-}
-
-    /**
-     * Menyimpan pertanyaan baru (biasanya dari sisi publik)
-     */
-    public function store(Request $request)
+    public function index()
     {
-        $validated = $request->validate([
-            'user_name' => 'required|string|max:255',
-            'email'     => 'nullable|email|max:255',
-            'question'  => 'required|string|min:10',
+        return Inertia::render('Admin/FaqList', [
+            // Penting: Gunakan paginate agar struktur data memiliki 'data' dan 'links'
+            'faqs' => FaqMessage::orderBy('created_at', 'desc')->paginate(10)
         ]);
-
-        $faq = FaqMessage::create($validated);
-
-        // Opsional: Catat log jika ingin tahu ada pertanyaan masuk
-        ActivityLog::create([
-            'user_id' => auth()->id() ?? 1, // Jika publik, bisa di-set ke admin default atau null
-            'action' => 'receive_faq',
-            'details' => [
-                'from' => $faq->user_name,
-                'question' => $faq->question
-            ]
-        ]);
-
-        return redirect()->back()->with('success', 'Pertanyaan Anda telah dikirim.');
     }
 
     /**
-     * Memperbarui jawaban dan status publikasi
+     * Update Jawaban & Status Publikasi
+     * Sinkron dengan: patch(route('admin.faqs.update', selectedFaq.id))
      */
     public function update(Request $request, $id)
     {
         $faq = FaqMessage::findOrFail($id);
 
+        // Validasi data dari form modal
         $validated = $request->validate([
             'answer' => 'required|string',
             'is_published' => 'required|boolean',
         ]);
 
+        // Simpan status lama untuk kebutuhan log audit
+        $oldStatus = $faq->is_published;
+
         $faq->update($validated);
 
-        // CATAT LOG: Admin menjawab atau mengubah status FAQ
-        ActivityLog::record('update_faq', [
-            'question' => $faq->question,
-            'is_published' => $faq->is_published ? 'Published' : 'Draft',
-            'has_answer' => !empty($faq->answer)
+        // CATAT LOG: Menggunakan helper record() yang sudah kita buat
+        ActivityLog::record('update_faq_status', [
+            'question' => substr($faq->question, 0, 50) . '...',
+            'published_status' => $faq->is_published ? 'Published' : 'Draft',
+            'action' => ($oldStatus != $faq->is_published) ? 'Toggle Visibility' : 'Update Answer'
         ]);
 
+        // Redirect back agar Inertia merefresh data di tabel tanpa reload halaman
         return redirect()->back()->with('success', 'FAQ berhasil diperbarui.');
-    }
-
-    /**
-     * Menghapus pertanyaan FAQ
-     */
-    public function destroy($id)
-    {
-        $faq = FaqMessage::findOrFail($id);
-        
-        // Simpan konten sebelum dihapus untuk detail log
-        $deletedContent = $faq->question;
-
-        // CATAT LOG: Sebelum data benar-benar hilang
-        ActivityLog::record('delete_faq', [
-            'question' => $deletedContent,
-            'asked_by' => $faq->user_name
-        ]);
-
-        $faq->delete();
-
-        return redirect()->back()->with('success', 'Pertanyaan FAQ berhasil dihapus.');
     }
 }

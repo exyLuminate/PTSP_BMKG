@@ -16,7 +16,7 @@ class ActivityLogController extends Controller
         return Inertia::render('Admin/ActivityLogList', [
             'logs' => ActivityLog::with('user') // Eager loading data admin
                 ->latest() // Urutkan dari yang terbaru
-                ->paginate(15) // Batasi 15 data per halaman
+                ->paginate(10) // Batasi 10 data per halaman
         ]);
     }
 }

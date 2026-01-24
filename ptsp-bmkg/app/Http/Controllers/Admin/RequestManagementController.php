@@ -77,7 +77,7 @@ class RequestManagementController extends Controller
             $dataRequest->result_file_path = $request->file('result_file')->store('private/results');
             
             if ($request->status === 'paid') {
-                $dataRequest->download_expired_at = now()->addDays(3);
+                $dataRequest->download_expired_at = now()->addDays(14);
             }
         }
 
@@ -87,15 +87,13 @@ class RequestManagementController extends Controller
         $dataRequest->save();
 
         // --- 4. LOG AKTIVITAS ---
-        ActivityLog::create([
-            'admin_id' => auth()->id(),
-            'action' => 'update_request_status',
-            'details' => json_encode([
-                'ticket_code' => $dataRequest->ticket_code,
-                'new_status'  => $dataRequest->status,
-                'has_billing' => $dataRequest->va_file_path ? 'Ya' : 'Tidak',
-                'has_result'  => $dataRequest->result_file_path ? 'Ya' : 'Tidak',
-            ]),
+        ActivityLog::record('update_request_status', [
+            'ticket_code' => $dataRequest->ticket_code,
+            'status_awal' => $dataRequest->getOriginal('status'), // Mengambil status sebelum di-save
+            'status_baru' => $dataRequest->status,
+            'admin_note'  => $dataRequest->admin_note,
+            'has_billing' => $dataRequest->va_file_path ? 'Ya' : 'Tidak',
+            'has_result'  => $dataRequest->result_file_path ? 'Ya' : 'Tidak',
         ]);
 
         return redirect()->back()->with('success', 'Status permohonan berhasil diperbarui.');
