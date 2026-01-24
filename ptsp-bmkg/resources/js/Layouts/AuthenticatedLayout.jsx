@@ -46,21 +46,22 @@ export default function AuthenticatedLayout({ header, children }) {
                                     </span>
                                 </NavLink>
 
-                                <NavLink href={route('admin.catalogs.index')} active={route().current('admin.catalogs.*')}>
-                                    Katalog Layanan
-                                </NavLink>
-
                                 <NavLink href={route('admin.faqs.index')} active={route().current('admin.faqs.*')}>
                                     FAQ
+                                </NavLink>
+
+                                <NavLink href={route('admin.reports.index')} active={route().current('admin.reports.*')}>
+                                    Laporan
+                                </NavLink>
+                                
+                                <NavLink href={route('admin.catalogs.index')} active={route().current('admin.catalogs.*')}>
+                                    Katalog Layanan
                                 </NavLink>
 
                                 <NavLink href={route('admin.logs.index')} active={route().current('admin.logs.*')}>
                                     Log Aktivitas
                                 </NavLink>
 
-                                <NavLink href={route('admin.reports.index')} active={route().current('admin.reports.*')}>
-                                    Laporan
-                                </NavLink>
                             </div>
                         </div>
 
@@ -125,21 +126,22 @@ export default function AuthenticatedLayout({ header, children }) {
                             )}
                         </ResponsiveNavLink>
 
-                        <ResponsiveNavLink href={route('admin.catalogs.index')} active={route().current('admin.catalogs.*')}>
-                            Katalog Layanan
-                        </ResponsiveNavLink>
-
                         <ResponsiveNavLink href={route('admin.faqs.index')} active={route().current('admin.faqs.*')}>
                             Manajemen FAQ
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink href={route('admin.reports.index')} active={route().current('admin.reports.*')}>
+                            Laporan
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink href={route('admin.catalogs.index')} active={route().current('admin.catalogs.*')}>
+                            Katalog Layanan
                         </ResponsiveNavLink>
 
                         <ResponsiveNavLink href={route('admin.logs.index')} active={route().current('admin.logs.*')}>
                             Audit Trail
                         </ResponsiveNavLink>
 
-                        <ResponsiveNavLink href={route('admin.reports.index')} active={route().current('admin.reports.*')}>
-                            Laporan
-                        </ResponsiveNavLink>
                     </div>
 
                     <div className="border-t border-gray-200 pb-1 pt-4">
