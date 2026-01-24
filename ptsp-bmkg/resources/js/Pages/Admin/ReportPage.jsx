@@ -2,27 +2,27 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
 
 export default function ReportPage({ auth }) {
-    // Menggunakan useForm untuk mengelola input filter
+    // 1. Mengelola input filter dengan useForm
     const { data, setData, processing, errors } = useForm({
-        start_date: '',
-        end_date: '',
-        status: '', // Opsional jika ingin filter status tertentu
+        start_date: new Date().toISOString().split('T')[0], // Default ke hari ini
+        end_date: new Date().toISOString().split('T')[0],
+        status: '', 
     });
 
     const handleSubmit = (e) => {
         e.preventDefault();
         
-        // Untuk download file, kita tidak menggunakan Inertia.post/get biasa 
-        // karena itu adalah request AJAX. Kita gunakan window.open atau 
-        // form submit manual ke route download.
+        // Membuat query string untuk download
         const queryParams = new URLSearchParams(data).toString();
+        
+        // Membuka route download di tab baru
         window.open(route('admin.reports.download') + '?' + queryParams, '_blank');
     };
 
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight uppercase tracking-tight">Cetak Laporan Layanan</h2>}
+            header={<h2 className="font-black text-xl text-slate-800 tracking-tight uppercase leading-tight">Cetak Laporan Layanan</h2>}
         >
             <Head title="Laporan" />
 
@@ -41,12 +41,12 @@ export default function ReportPage({ auth }) {
                                     <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Tanggal Mulai</label>
                                     <input 
                                         type="date" 
-                                        className="w-full rounded-2xl border-slate-200 focus:border-blue-500 focus:ring-blue-500 font-bold text-slate-700 transition-all"
+                                        className="w-full rounded-2xl border-slate-200 focus:border-blue-500 focus:ring-blue-500 font-bold text-slate-700 transition-all px-4 py-3 bg-slate-50/50"
                                         value={data.start_date}
                                         onChange={e => setData('start_date', e.target.value)}
                                         required
                                     />
-                                    {errors.start_date && <div className="text-red-500 text-xs mt-1">{errors.start_date}</div>}
+                                    {errors.start_date && <div className="text-red-500 text-[10px] font-bold mt-1 uppercase">{errors.start_date}</div>}
                                 </div>
 
                                 {/* Tanggal Selesai */}
@@ -54,27 +54,32 @@ export default function ReportPage({ auth }) {
                                     <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Tanggal Selesai</label>
                                     <input 
                                         type="date" 
-                                        className="w-full rounded-2xl border-slate-200 focus:border-blue-500 focus:ring-blue-500 font-bold text-slate-700 transition-all"
+                                        className="w-full rounded-2xl border-slate-200 focus:border-blue-500 focus:ring-blue-500 font-bold text-slate-700 transition-all px-4 py-3 bg-slate-50/50"
                                         value={data.end_date}
                                         onChange={e => setData('end_date', e.target.value)}
                                         required
                                     />
-                                    {errors.end_date && <div className="text-red-500 text-xs mt-1">{errors.end_date}</div>}
+                                    {errors.end_date && <div className="text-red-500 text-[10px] font-bold mt-1 uppercase">{errors.end_date}</div>}
                                 </div>
                             </div>
 
-                            {/* Filter Status */}
+                            {/* Filter Status Lengkap */}
                             <div>
                                 <label className="block text-[10px] font-black uppercase text-slate-400 mb-2 tracking-widest">Filter Status Permohonan</label>
                                 <select 
-                                    className="w-full rounded-2xl border-slate-200 focus:border-blue-500 focus:ring-blue-500 font-bold text-slate-700 text-sm transition-all"
+                                    className="w-full rounded-2xl border-slate-200 focus:border-blue-500 focus:ring-blue-500 font-bold text-slate-700 text-sm transition-all px-4 py-3 bg-slate-50/50"
                                     value={data.status}
                                     onChange={e => setData('status', e.target.value)}
                                 >
-                                    <option value="">Semua Status</option>
-                                    <option value="paid">Sudah Bayar (Paid)</option>
-                                    <option value="done">Selesai (Done)</option>
-                                    <option value="on_process">Dalam Proses</option>
+                                    <option value="">SEMUA STATUS</option>
+                                    <option value="on_process">DALAM PROSES (ON PROCESS)</option>
+                                    <option value="waiting_payment">MENUNGGU PEMBAYARAN</option>
+                                    <option value="verifikasi_payment">VERIFIKASI PEMBAYARAN</option>
+                                    <option value="paid">SUDAH BAYAR (PAID)</option>
+                                    <option value="done">SELESAI (DONE)</option>
+                                    <option value="rejected">DITOLAK (REJECTED)</option>
+                                    {/* STATUS INVALID BARU */}
+                                    <option value="invalid">DATA TIDAK VALID (INVALID)</option>
                                 </select>
                             </div>
 
@@ -89,7 +94,9 @@ export default function ReportPage({ auth }) {
                                     </svg>
                                     Unduh Laporan PDF
                                 </button>
-                                <p className="text-center text-[10px] text-slate-400 mt-4 font-bold uppercase tracking-tighter">Laporan akan otomatis diunduh dalam format PDF (A4 Landscape)</p>
+                                <p className="text-center text-[10px] text-slate-400 mt-4 font-bold uppercase tracking-tighter">
+                                    Laporan diproses menggunakan data real-time (Asia/Jakarta)
+                                </p>
                             </div>
                         </form>
                     </div>

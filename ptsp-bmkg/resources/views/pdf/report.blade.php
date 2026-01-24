@@ -1,59 +1,101 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Laporan PTSP BMKG</title>
+    <title>Laporan PTSP BMKG - {{ $start_date }}</title>
     <style>
-        body { font-family: 'Helvetica', sans-serif; font-size: 11px; }
-        .header { text-align: center; margin-bottom: 30px; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #333; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; font-weight: bold; text-transform: uppercase; }
-        .total { margin-top: 20px; font-size: 13px; font-weight: bold; text-align: right; }
+        body { font-family: 'Helvetica', sans-serif; font-size: 10px; color: #333; line-height: 1.4; }
+        .header { text-align: center; margin-bottom: 25px; border-bottom: 2px solid #000; padding-bottom: 10px; }
+        .header h2 { margin: 0; font-size: 16px; text-transform: uppercase; }
+        .header h3 { margin: 2px 0; font-size: 14px; text-transform: uppercase; }
+        .header p { margin: 5px 0; font-size: 11px; color: #555; }
+        
+        .filter-info { margin-bottom: 15px; font-weight: bold; text-transform: uppercase; font-size: 9px; color: #666; }
+        
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 0.5px solid #333; padding: 6px 8px; text-align: left; }
+        th { background-color: #f8fafc; font-weight: bold; text-transform: uppercase; font-size: 9px; }
+        
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
+        
+        .total-box { 
+            margin-top: 20px; 
+            padding: 10px; 
+            background-color: #f1f5f9; 
+            border: 1px solid #cbd5e1;
+            font-size: 12px; 
+            font-weight: bold; 
+            text-align: right; 
+        }
+        
+        .footer-sign { margin-top: 40px; width: 100%; }
+        .footer-sign td { border: none; padding: 0; }
+        .sign-area { text-align: center; width: 250px; float: right; }
     </style>
 </head>
 <body>
     <div class="header">
-        <h2 style="margin:0">LAPORAN PELAYANAN DATA METEOROLOGI</h2>
-        <h3 style="margin:5px 0">STASIUN METEOROLOGI RADIN INTEN II LAMPUNG</h3>
-        <p>Periode: {{ $start_date }} s/d {{ $end_date }}</p>
+        <h2>BADAN METEOROLOGI, KLIMATOLOGI, DAN GEOFISIKA</h2>
+        <h3>STASIUN METEOROLOGI RADIN INTEN II LAMPUNG</h3>
+        <p>Alamat: Jl. Branti Raya No.1, Natar, Lampung Selatan | Telp: (0721) 7697042</p>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 20px;">
+        <h4 style="margin: 0; text-decoration: underline; text-transform: uppercase;">LAPORAN PELAYANAN DATA METEOROLOGI (PNBP)</h4>
+        <p style="margin: 5px 0;">Periode: <strong>{{ date('d/m/Y', strtotime($start_date)) }}</strong> s/d <strong>{{ date('d/m/Y', strtotime($end_date)) }}</strong></p>
+    </div>
+
+    <div class="filter-info">
+        Filter Status: {{ $status ? strtoupper(str_replace('_', ' ', $status)) : 'SEMUA DATA' }}
     </div>
 
     <table>
         <thead>
             <tr>
-                <th>No</th>
-                <th>Tanggal</th>
-                <th>Tiket</th>
+                <th width="3%" class="text-center">No</th>
+                <th width="12%">Tanggal</th>
+                <th width="12%">Kode Tiket</th>
                 <th>Nama Pemohon</th>
-                <th>Jenis Data</th>
-                <th>Status</th>
-                <th>Tarif PNBP</th>
+                <th>Jenis Informasi</th>
+                <th width="10%" class="text-center">Status</th>
+                <th width="15%" class="text-right">Tarif PNBP</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($reports as $index => $item)
+            @forelse($reports as $index => $item)
             <tr>
-                <td>{{ $index + 1 }}</td>
-                <td>{{ $item->created_at->format('d-m-Y') }}</td>
-                <td>{{ $item->ticket_code }}</td>
-                <td>{{ $item->name }}</td>
-                <td>{{ $item->catalog->info_type }}</td>
-                <td>{{ strtoupper($item->status) }}</td>
-                <td>Rp {{ number_format($item->catalog->price, 0, ',', '.') }}</td>
+                <td class="text-center">{{ $index + 1 }}</td>
+                <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
+                <td><strong>{{ $item->ticket_code }}</strong></td>
+                <td>{{ strtoupper($item->name) }}</td>
+                <td>{{ $item->catalog->info_type ?? 'Custom Request' }}</td>
+                <td class="text-center">{{ strtoupper(str_replace('_', ' ', $item->status)) }}</td>
+                <td class="text-right">Rp {{ number_format($item->catalog->price ?? 0, 0, ',', '.') }}</td>
             </tr>
-            @endforeach
+            @empty
+            <tr>
+                <td colspan="7" class="text-center" style="padding: 20px;">TIDAK ADA DATA DITEMUKAN PADA PERIODE INI</td>
+            </tr>
+            @endforelse
         </tbody>
     </table>
 
-    <div class="total">
-        Total Penerimaan PNBP: Rp {{ number_format($total_pnbp, 0, ',', '.') }}
+    @if($total_pnbp > 0)
+    <div class="total-box">
+        TOTAL PENERIMAAN PNBP: Rp {{ number_format($total_pnbp, 0, ',', '.') }}
     </div>
+    <p style="font-size: 8px; font-style: italic; color: #666;">* Total hanya menghitung permohonan dengan status PAID atau DONE</p>
+    @endif
 
-    <div style="margin-top: 50px; float: right; text-align: center;">
-        <p>Dicetak pada: {{ date('d-m-Y H:i') }}</p>
-        <p>Admin Operasional,</p>
-        <br><br><br>
-        <p><strong>( {{ $admin_name }} )</strong></p>
+    <div class="footer-sign">
+        <div class="sign-area">
+            <p>Lampung Selatan, {{ date('d F Y') }}</p>
+            <p>Dicetak pada: {{ now()->format('H:i') }} WIB</p>
+            <p style="margin-top: 10px;">Admin Operasional PTSP,</p>
+            <br><br><br><br>
+            <p><strong>( {{ strtoupper($admin_name) }} )</strong></p>
+            <p style="font-size: 8px; color: #999;">Sistem Informasi Layanan Data BMKG Radin Inten II</p>
+        </div>
     </div>
 </body>
 </html>
