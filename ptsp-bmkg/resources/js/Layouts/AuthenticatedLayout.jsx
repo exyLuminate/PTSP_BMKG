@@ -59,7 +59,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     href={route('admin.logs.index')}
                                     active={route().current('admin.logs.*')}
                                 >
-                                    Audit Trail
+                                    Log Aktivitas
                                 </NavLink>
 
                                 <NavLink

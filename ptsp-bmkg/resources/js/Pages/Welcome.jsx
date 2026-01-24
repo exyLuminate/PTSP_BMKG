@@ -106,12 +106,12 @@ export default function LandingPage({ catalogs, auth }) {
                         <div className="p-8">
                             <div className="w-20 h-20 bg-blue-50 text-blue-600 rounded-3xl text-2xl font-black flex items-center justify-center mx-auto mb-8 shadow-inner">2</div>
                             <h3 className="text-xl font-black text-slate-900 mb-4 uppercase tracking-tight">Isi Formulir</h3>
-                            <p className="text-slate-500 leading-relaxed font-medium">Lengkapi identitas diri dan unggah berkas persyaratan seperti KTP atau Surat Pengantar.</p>
+                            <p className="text-slate-500 leading-relaxed font-medium">Lengkapi identitas diri (KTP) dan unggah berkas permohonan data.</p>
                         </div>
                         <div className="p-8">
                             <div className="w-20 h-20 bg-blue-50 text-blue-600 rounded-3xl text-2xl font-black flex items-center justify-center mx-auto mb-8 shadow-inner">3</div>
                             <h3 className="text-xl font-black text-slate-900 mb-4 uppercase tracking-tight">Terima Data</h3>
-                            <p className="text-slate-500 leading-relaxed font-medium">Selesaikan pembayaran PNBP, dan data akan dikirimkan melalui sistem atau email.</p>
+                            <p className="text-slate-500 leading-relaxed font-medium">Selesaikan pembayaran PNBP, data akan dikirimkan melalui sistem.</p>
                         </div>
                     </div>
                 </div>

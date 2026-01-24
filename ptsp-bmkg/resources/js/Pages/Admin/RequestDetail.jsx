@@ -15,21 +15,32 @@ export default function RequestDetail({ auth, requestData }) {
     const totalPnbp = requestData.catalog.price * requestData.quantity;
 
     const handleAction = (newStatus) => {
-        data.status = newStatus;
-        post(route('admin.requests.update', requestData.id), {
-            forceFormData: true, 
-            preserveScroll: true,
-            onSuccess: () => {
-                setData('va_file', null);
-                setData('result_file', null);
-            },
-        });
-    };
+    // Validasi: Kalau mau mundurin status atau tolak, CATATAN WAJIB ADA
+    if (['waiting_payment', 'rejected', 'on_process'].includes(newStatus) && !data.admin_note) {
+        alert('Waduh! Kasih catatan dulu dong, biar User tahu apa yang harus diperbaiki.');
+        return;
+    }
+
+    // Update status di data form sebelum dikirim
+    data.status = newStatus;
+    
+    post(route('admin.requests.update', requestData.id), {
+        forceFormData: true, 
+        preserveScroll: true,
+        onSuccess: () => {
+            alert('Status berhasil diupdate!');
+            setData('va_file', null);
+            setData('result_file', null);
+        },
+    });
+};
 
     const getNextActionLabel = () => {
         switch (requestData.status) {
             case 'on_process': return 'Setujui & Kirim Billing';
             case 'verifikasi_payment': return 'Konfirmasi Pembayaran Selesai';
+            case 'waiting_payment': return 'Perbarui File Billing';
+            case 'paid': return 'Perbarui File Hasil';
             default: return null;
         }
     };
@@ -126,75 +137,99 @@ export default function RequestDetail({ auth, requestData }) {
                     </div>
 
                     {/* --- KOLOM KANAN: PANEL KENDALI --- */}
-                    <div className="space-y-6">
-                        <div className="bg-white p-6 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] shadow-xl border border-slate-200 lg:sticky lg:top-24">
-                            <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest mb-8 border-b pb-4 text-center">Panel Kendali Admin</h3>
-                            
-                            <form className="space-y-8">
-                                {requestData.status === 'on_process' && (
-                                    <div className="space-y-6">
-                                        <div className="p-4 bg-blue-50 text-blue-700 text-[11px] rounded-xl border border-blue-100 font-bold leading-relaxed">
-                                            Lengkapi file Billing (PDF) sebelum mengubah status menjadi "Waiting Payment".
-                                        </div>
-                                        <div>
-                                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block italic">PDF Kode Billing (VA)</label>
-                                            <input type="file" onChange={e => setData('va_file', e.target.files[0])} className="w-full text-[10px] font-black text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-600 file:text-white file:uppercase file:tracking-widest" />
-                                            {errors.va_file && <p className="text-red-500 text-[9px] mt-2 font-bold uppercase">{errors.va_file}</p>}
-                                        </div>
-                                        <div>
-                                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block italic">File Hasil Data (Final)</label>
-                                            <input type="file" onChange={e => setData('result_file', e.target.files[0])} className="w-full text-[10px] font-black text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-slate-900 file:text-white file:uppercase file:tracking-widest" />
-                                            {errors.result_file && <p className="text-red-500 text-[9px] mt-2 font-bold uppercase">{errors.result_file}</p>}
-                                        </div>
-                                    </div>
-                                )}
-
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Catatan Admin</label>
-                                    <textarea 
-                                        className="w-full text-sm border-slate-200 rounded-2xl focus:ring-blue-500 h-24 font-medium bg-slate-50"
-                                        value={data.admin_note}
-                                        onChange={e => setData('admin_note', e.target.value)}
-                                        placeholder="Tulis alasan jika menolak..."
-                                    />
-                                </div>
-
-                                <div className="space-y-3 pt-4 border-t border-slate-100">
-                                    {getNextActionLabel() && (
-                                        <button 
-                                            type="button"
-                                            onClick={() => handleAction(requestData.status === 'on_process' ? 'waiting_payment' : 'paid')}
-                                            disabled={processing}
-                                            className="w-full bg-blue-600 text-white py-4 rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-blue-700 transition shadow-lg shadow-blue-100"
-                                        >
-                                            {processing ? 'Memproses...' : getNextActionLabel()}
-                                        </button>
-                                    )}
-
-                                    {['on_process', 'verifikasi_payment', 'waiting_payment'].includes(requestData.status) && (
-                                        <button 
-                                            type="button" 
-                                            onClick={() => handleAction('rejected')}
-                                            disabled={processing}
-                                            className="w-full bg-white text-red-600 py-4 rounded-2xl font-black uppercase text-[10px] tracking-widest border border-red-200 hover:bg-red-50 transition"
-                                        >
-                                            Tolak Permohonan
-                                        </button>
-                                    )}
-
-                                    {['paid', 'done', 'rejected'].includes(requestData.status) && (
-                                        <button 
-                                            type="button" 
-                                            onClick={() => handleAction('on_process')} 
-                                            className="w-full py-4 border-2 border-dashed border-slate-200 text-slate-400 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-50 transition"
-                                        >
-                                            🔄 Reset Ke Proses
-                                        </button>
-                                    )}
-                                </div>
-                            </form>
-                        </div>
+<div className="space-y-6">
+    <div className="bg-white p-6 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] shadow-xl border border-slate-200 lg:sticky lg:top-24">
+        <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest mb-8 border-b pb-4 text-center">Panel Kendali Admin</h3>
+        
+        <form className="space-y-8">
+            {/* Upload Zone (Kondisional) */}
+            <div className="space-y-6">
+                {/* Tampilkan upload Billing hanya di fase sebelum bayar */}
+                {['on_process', 'waiting_payment', 'invalid'].includes(requestData.status) && (
+                    <div>
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block italic">PDF Kode Billing (VA)</label>
+                        <input type="file" onChange={e => setData('va_file', e.target.files[0])} className="w-full text-[10px] font-black text-slate-400 file:bg-blue-600 file:text-white file:rounded-full file:px-4 file:py-1 file:border-0" />
+                        {errors.va_file && <p className="text-red-500 text-[9px] mt-2 font-bold uppercase">{errors.va_file}</p>}
                     </div>
+                )}
+                {/* Tampilkan upload Hasil Data di fase verifikasi atau setelah bayar */}
+                {['on_process', 'verifikasi_payment', 'paid'].includes(requestData.status) && (
+                    <div>
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block italic">File Hasil Data (Final)</label>
+                        <input type="file" onChange={e => setData('result_file', e.target.files[0])} className="w-full text-[10px] font-black text-slate-400 file:bg-slate-900 file:text-white file:rounded-full file:px-4 file:py-1 file:border-0" />
+                        {errors.result_file && <p className="text-red-500 text-[9px] mt-2 font-bold uppercase">{errors.result_file}</p>}
+                    </div>
+                )}
+            </div>
+
+            {/* Catatan Admin */}
+            <div className="space-y-2">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Catatan Admin</label>
+                <textarea 
+                    className="w-full text-sm border-slate-200 rounded-2xl h-24 font-medium bg-slate-50"
+                    value={data.admin_note}
+                    onChange={e => setData('admin_note', e.target.value)}
+                    placeholder="Alasan revisi atau catatan..."
+                />
+            </div>
+
+            {/* --- SMART BUTTONS AREA --- */}
+            <div className="space-y-3 pt-4 border-t border-slate-100">
+                {/* A. TOMBOL UTAMA (PROSES MAJU) */}
+                {getNextActionLabel() && (
+                    <button 
+                        type="button"
+                        onClick={() => {
+                            if(requestData.status === 'on_process') handleAction('waiting_payment');
+                            else if(requestData.status === 'verifikasi_payment') handleAction('paid');
+                            else handleAction(requestData.status); // Hanya update file
+                        }}
+                        disabled={processing}
+                        className="w-full bg-blue-600 text-white py-4 rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-blue-700 transition shadow-lg shadow-blue-100"
+                    >
+                        {processing ? 'Memproses...' : getNextActionLabel()}
+                    </button>
+                )}
+
+                {/* B. TOMBOL REVISI (Jika bukti bayar ngeblur) */}
+                {requestData.status === 'verifikasi_payment' && (
+                    <button 
+                        type="button" 
+                        onClick={() => handleAction('waiting_payment')}
+                        disabled={processing}
+                        className="w-full bg-amber-500 text-white py-4 rounded-2xl font-black uppercase text-[10px] tracking-widest hover:bg-amber-600 transition shadow-lg"
+                    >
+                        Bukti Bayar Salah / Ngeblur
+                    </button>
+                )}
+
+                {/* C. TOMBOL TOLAK (Hanya untuk fase verifikasi) */}
+                {['on_process', 'verifikasi_payment', 'waiting_payment'].includes(requestData.status) && (
+                    <button 
+                        type="button" 
+                        onClick={() => handleAction('rejected')}
+                        disabled={processing}
+                        className="w-full bg-white text-red-600 py-4 rounded-2xl font-black uppercase text-[10px] tracking-widest border border-red-200 hover:bg-red-50 transition"
+                    >
+                        Tolak Permohonan
+                    </button>
+                )}
+
+                {/* D. TOMBOL RESET / RE-AKTIFKAN (Untuk tiket hangus atau selesai) */}
+                {['paid', 'done', 'rejected', 'invalid', 'expired'].includes(requestData.status) && (
+                    <button 
+                        type="button" 
+                        onClick={() => handleAction('on_process')} 
+                        className={`w-full py-4 border-2 border-dashed rounded-2xl text-[10px] font-black uppercase tracking-widest transition
+                            ${['invalid', 'expired'].includes(requestData.status) ? 'border-amber-300 text-amber-600 hover:bg-amber-50' : 'border-slate-200 text-slate-400 hover:bg-slate-50'}`}
+                    >
+                        {['invalid', 'expired'].includes(requestData.status) ? '🔄 Re-aktifkan Tiket' : '🔄 Reset Ke Proses'}
+                    </button>
+                )}
+            </div>
+        </form>
+    </div>
+</div>
                 </div>
             </div>
         </AuthenticatedLayout>
@@ -225,6 +260,9 @@ function getStatusStyle(status) {
         case 'verifikasi_payment': return 'bg-purple-50 text-purple-600 border-purple-100';
         case 'paid': return 'bg-emerald-50 text-emerald-600 border-emerald-100';
         case 'rejected': return 'bg-red-50 text-red-600 border-red-100';
+        case 'invalid': return 'bg-slate-900 text-slate-300 border-slate-700'; 
+        case 'expired': return 'bg-red-900 text-white border-red-800'; 
+        case 'done': return 'bg-slate-100 text-slate-500 border-slate-200'; 
         default: return 'bg-slate-50 text-slate-500 border-slate-200';
     }
 }

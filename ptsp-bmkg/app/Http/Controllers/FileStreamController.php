@@ -36,9 +36,29 @@ class FileStreamController extends Controller
     {
         $data = DataRequest::findOrFail($id);
 
-        // Keamanan: Cek apakah password di URL cocok dengan di database
         if ($request->password !== $data->access_password) {
             abort(403, 'Akses ditolak. Password akses salah.');
+        }
+
+        if ($type === 'result' && $data->download_expired_at && $data->download_expired_at->isPast()) {
+        
+        // Opsional: Sambil nolak, kita update statusnya di DB biar sinkron
+        if ($data->status !== 'expired') {
+            $data->update(['status' => 'expired']);
+        }
+
+        abort(410, 'Maaf, masa berlaku tautan unduhan ini sudah berakhir.');
+    }
+
+        // --- LOGIKA TRACKING BARU ---
+        // Jika user mengakses file HASIL (result), tandai sebagai 'done' dan catat waktunya
+        if ($type === 'result' && $data->status === 'paid') {
+            if (is_null($data->downloaded_at)) {
+                $data->update([
+                    'downloaded_at' => now(),
+                    'status' => 'done'
+                ]);
+            }
         }
 
         $path = match($type) {

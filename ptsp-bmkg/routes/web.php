@@ -33,6 +33,9 @@ Route::prefix('cek-status')->name('status.')->group(function () {
     Route::get('/detail/{ticket}', [StatusController::class, 'show'])->name('show'); // Berubah ke GET + Param
     Route::post('/verify', [StatusController::class, 'verifyPassword'])->name('verify_password');
     Route::post('/upload-proof/{ticket}', [StatusController::class, 'uploadProof'])->name('upload_proof');
+
+    Route::post('/re-request/{ticket}', [StatusController::class, 'reRequestBilling'])->name('re_request');
+    Route::get('/download/{id}', [StatusController::class, 'downloadResult'])->name('download');
 });
 
 Route::get('/', function () {

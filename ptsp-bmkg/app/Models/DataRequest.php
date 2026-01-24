@@ -22,22 +22,21 @@ class DataRequest extends Model
         'quantity',
         'ktp_path',
         'letter_path',
-        'payment_proof_path', // <--- TAMBAHKAN INI (Untuk Bukti Bayar User)
+        'payment_proof_path', 
         'data_catalog_id',
         'status',
-        'va_number',
-        'va_file_path',       // <--- TAMBAHKAN INI (Untuk PDF Billing Admin)
+        'va_file_path',     
         'result_file_path',
         'admin_note',
-        'ready_at',
         'va_expired_at',
-        'download_expired_at'
+        'download_expired_at',
+        'downloaded_at' 
     ];
 
     protected $casts = [
-        'ready_at' => 'datetime',
         'va_expired_at' => 'datetime',
         'download_expired_at' => 'datetime',
+        'downloaded_at' => 'datetime',
     ];
 
     public function catalog()

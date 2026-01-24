@@ -5,7 +5,7 @@ export default function ActivityLogList({ auth, logs }) {
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight uppercase tracking-tight">Audit Trail - Log Aktivitas Admin</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight uppercase tracking-tight">Log Aktivitas Admin</h2>}
         >
             <Head title="Audit Trail" />
 
