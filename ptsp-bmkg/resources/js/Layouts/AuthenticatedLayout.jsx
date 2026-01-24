@@ -6,26 +6,24 @@ import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function AuthenticatedLayout({ header, children }) {
-    // 1. Ambil data notifications dari shared props (HandleInertiaRequests middleware)
     const { auth, notifications } = usePage().props;
     const user = auth.user;
     
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     return (
-        <div className="min-h-screen bg-gray-100 font-sans">
+        /* Tambahkan flex flex-col agar footer bisa didorong ke bawah */
+        <div className="min-h-screen flex flex-col bg-gray-100 font-sans">
             <nav className="border-b border-gray-100 bg-white">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
                         <div className="flex">
-                            {/* Logo */}
                             <div className="flex shrink-0 items-center">
                                 <Link href={route('admin.dashboard')}>
                                     <ApplicationLogo className="block h-9 w-auto fill-current text-blue-600" />
                                 </Link>
                             </div>
 
-                            {/* --- Navigation Links (Desktop) --- */}
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink
                                     href={route('admin.dashboard')}
@@ -34,7 +32,6 @@ export default function AuthenticatedLayout({ header, children }) {
                                     Dashboard
                                 </NavLink>
                                 
-                                {/* Fix Red Dot: Dibungkus span relative agar posisi absolute-nya akurat */}
                                 <NavLink
                                     href={route('admin.requests.index')}
                                     active={route().current('admin.requests.*')}
@@ -67,7 +64,6 @@ export default function AuthenticatedLayout({ header, children }) {
                             </div>
                         </div>
 
-                        {/* User Dropdown (Desktop) */}
                         <div className="hidden sm:ms-6 sm:flex sm:items-center">
                             <div className="relative ms-3">
                                 <Dropdown>
@@ -93,13 +89,11 @@ export default function AuthenticatedLayout({ header, children }) {
                             </div>
                         </div>
 
-                        {/* Hamburger Button (Mobile) */}
                         <div className="-me-2 flex items-center sm:hidden">
                             <button
                                 onClick={() => setShowingNavigationDropdown((previousState) => !previousState)}
                                 className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:outline-none relative"
                             >
-                                {/* Ping Dot di Hamburger agar Admin sadar ada notifikasi masuk */}
                                 {notifications?.pending_count > 0 && !showingNavigationDropdown && (
                                     <span className="absolute top-2 right-2 h-2 w-2 bg-red-600 rounded-full animate-ping"></span>
                                 )}
@@ -112,7 +106,6 @@ export default function AuthenticatedLayout({ header, children }) {
                     </div>
                 </div>
 
-                {/* --- Mobile Navigation Menu --- */}
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                     <div className="space-y-1 pb-3 pt-2">
                         <ResponsiveNavLink href={route('admin.dashboard')} active={route().current('admin.dashboard')}>
@@ -180,6 +173,15 @@ export default function AuthenticatedLayout({ header, children }) {
             <main className="animate-in fade-in duration-500">
                 {children}
             </main>
+
+            {/* --- FOOTER MINIMALIS: Diletakkan di sini --- */}
+           <footer className="bg-white border-t border-slate-200 mt-auto py-8">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <p className="text-center text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
+                        &copy; {new Date().getFullYear()} PTSP BMKG Lampung. All Rights Reserved.
+                    </p>
+                </div>
+            </footer>
         </div>
     );
 }

@@ -61,17 +61,17 @@ export default function Dashboard({ auth, monthlyStats, paymentStats, summary, r
                         </div>
 
                         <div className="bg-emerald-600 p-5 sm:p-6 rounded-2xl shadow-lg shadow-emerald-100 border border-emerald-500 text-white">
-                            <p className="text-[10px] font-black uppercase tracking-widest opacity-80">Total PNBP (All-Time)</p>
-                            <div className="flex items-baseline gap-1 mt-2">
-                                <span className="text-xs font-bold opacity-70">Rp</span>
-                                <p className="text-2xl sm:text-3xl font-black italic">
-                                    {new Intl.NumberFormat('id-ID').format(summary.total_pnbp || 0)}
-                                </p>
-                            </div>
-                            <p className="text-[10px] mt-4 opacity-70 font-bold uppercase border-t border-emerald-400 pt-3 italic">
-                                Akumulasi Seluruh Pendapatan
+                        <p className="text-[10px] font-black uppercase tracking-widest opacity-80">PNBP Tahun Ini</p>
+                        <div className="flex items-baseline gap-1 mt-2">
+                            <span className="text-xs font-bold opacity-70">Rp</span>
+                            <p className="text-xl sm:text-2xl font-black italic">
+                                {new Intl.NumberFormat('id-ID').format(summary.yearly_pnbp || 0)}
                             </p>
                         </div>
+                        <p className="text-[10px] mt-4 opacity-70 font-bold uppercase border-t border-emerald-400 pt-3 italic">
+                            Januari - Desember {new Date().getFullYear()}
+                        </p>
+                    </div>
                     </div>
 
                     {/* Charts Row */}

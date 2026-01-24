@@ -34,7 +34,9 @@ class DashboardController extends Controller
         ];
 
         // 3. HITUNG TOTAL PNBP (KUMULATIF SEMUA WAKTU)
-        $totalPnbp = DataRequest::whereIn('status', ['paid', 'done'])
+        
+        $yearlyPnbp = DataRequest::whereIn('status', ['paid', 'done'])
+            ->whereYear('requests.created_at', date('Y')) // Filter tahun sekarang
             ->join('data_catalogs', 'requests.data_catalog_id', '=', 'data_catalogs.id') 
             ->sum(DB::raw('data_catalogs.price * requests.quantity'));
 
@@ -56,7 +58,7 @@ class DashboardController extends Controller
         $summary = [
             'total_requests'       => DataRequest::count(),
             'pending_verification' => ($paymentStats['on_process'] + $paymentStats['verifikasi_payment']),
-            'total_pnbp'           => $totalPnbp,
+            'yearly_pnbp'          => $yearlyPnbp,
             'monthly_pnbp'         => $monthlyPnbp, // Data baru untuk Frontend
         ];
 
