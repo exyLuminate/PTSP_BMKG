@@ -11,19 +11,18 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // 1. Ambil data tren bulanan (Tetap sama, namun menggunakan selectRaw agar lebih bersih)
+        // 1. Tren bulanan untuk Bar Chart
         $monthlyStats = DataRequest::selectRaw('MONTH(created_at) as month, COUNT(*) as total')
             ->whereYear('created_at', date('Y'))
             ->groupBy('month')
             ->orderBy('month')
             ->get();
 
-        // 2. Ambil statistik semua status dalam satu query (Lebih cepat)
+        // 2. Statistik Status untuk Pie Chart
         $statusCounts = DataRequest::select('status', DB::raw('count(*) as total'))
             ->groupBy('status')
             ->pluck('total', 'status');
 
-        // 3. Susun paymentStats sesuai status baru yang ada di RequestDetail.jsx
         $paymentStats = [
             'on_process'         => $statusCounts['on_process'] ?? 0,
             'waiting_payment'    => $statusCounts['waiting_payment'] ?? 0,
@@ -34,17 +33,38 @@ class DashboardController extends Controller
             'rejected'           => $statusCounts['rejected'] ?? 0,
         ];
 
-        // 4. Ringkasan angka di atas dashboard
+        // 3. HITUNG TOTAL PNBP (KUMULATIF SEMUA WAKTU)
+        $totalPnbp = DataRequest::whereIn('status', ['paid', 'done'])
+            ->join('data_catalogs', 'requests.data_catalog_id', '=', 'data_catalogs.id') 
+            ->sum(DB::raw('data_catalogs.price * requests.quantity'));
+
+        // 4. HITUNG PNBP KHUSUS BULAN INI
+        // Menggunakan whereMonth dan whereYear untuk memfilter data di Januari 2026
+        $monthlyPnbp = DataRequest::whereIn('status', ['paid', 'done'])
+            ->whereMonth('requests.created_at', date('m'))
+            ->whereYear('requests.created_at', date('Y'))
+            ->join('data_catalogs', 'requests.data_catalog_id', '=', 'data_catalogs.id') 
+            ->sum(DB::raw('data_catalogs.price * requests.quantity'));
+
+        // 5. AMBIL 5 AKTIVITAS TERKINI
+        $recentRequests = DataRequest::with('catalog')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        // 6. Ringkasan angka dashboard
         $summary = [
-            'total_requests' => DataRequest::count(),
-            // Butuh Verifikasi = Berkas Baru (on_process) + Bukti Bayar Baru (verifikasi_payment)
+            'total_requests'       => DataRequest::count(),
             'pending_verification' => ($paymentStats['on_process'] + $paymentStats['verifikasi_payment']),
+            'total_pnbp'           => $totalPnbp,
+            'monthly_pnbp'         => $monthlyPnbp, // Data baru untuk Frontend
         ];
 
         return Inertia::render('Admin/Dashboard', [
-            'monthlyStats' => $monthlyStats,
-            'paymentStats' => $paymentStats,
-            'summary'      => $summary,
+            'monthlyStats'   => $monthlyStats,
+            'paymentStats'   => $paymentStats,
+            'summary'        => $summary,
+            'recentRequests' => $recentRequests,
         ]);
     }
 }

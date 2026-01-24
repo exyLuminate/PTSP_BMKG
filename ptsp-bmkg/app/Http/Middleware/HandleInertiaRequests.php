@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use App\Models\DataRequest;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -28,12 +29,18 @@ class HandleInertiaRequests extends Middleware
      * @return array<string, mixed>
      */
     public function share(Request $request): array
-    {
-        return [
-            ...parent::share($request),
-            'auth' => [
-                'user' => $request->user(),
-            ],
-        ];
-    }
+{
+    return [
+        ...parent::share($request),
+        'auth' => [
+            'user' => $request->user(),
+        ],
+        // Tambahkan ini agar angka merah muncul secara global
+        'notifications' => [
+            'pending_count' => $request->user() 
+                ? DataRequest::whereIn('status', ['on_process', 'verifikasi_payment'])->count() 
+                : 0,
+        ],
+    ];
+}
 }

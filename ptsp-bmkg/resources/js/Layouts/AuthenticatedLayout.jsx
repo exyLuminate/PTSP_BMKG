@@ -6,7 +6,10 @@ import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function AuthenticatedLayout({ header, children }) {
-    const user = usePage().props.auth.user;
+    // 1. Ambil data notifications dari shared props (HandleInertiaRequests middleware)
+    const { auth, notifications } = usePage().props;
+    const user = auth.user;
+    
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     return (
@@ -31,47 +34,40 @@ export default function AuthenticatedLayout({ header, children }) {
                                     Dashboard
                                 </NavLink>
                                 
+                                {/* Fix Red Dot: Dibungkus span relative agar posisi absolute-nya akurat */}
                                 <NavLink
                                     href={route('admin.requests.index')}
                                     active={route().current('admin.requests.*')}
                                 >
-                                    Daftar Permintaan
+                                    <span className="relative py-2">
+                                        Daftar Permintaan
+                                        {notifications?.pending_count > 0 && (
+                                            <span className="absolute -top-1 -right-5 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-[9px] font-bold text-white shadow-sm animate-pulse z-10">
+                                                {notifications.pending_count}
+                                            </span>
+                                        )}
+                                    </span>
                                 </NavLink>
 
-                                {/* Manajemen Katalog */}
-                                <NavLink
-                                    href={route('admin.catalogs.index')}
-                                    active={route().current('admin.catalogs.*')}
-                                >
+                                <NavLink href={route('admin.catalogs.index')} active={route().current('admin.catalogs.*')}>
                                     Katalog Layanan
                                 </NavLink>
 
-                                {/* Manajemen FAQ */}
-                                <NavLink
-                                    href={route('admin.faqs.index')}
-                                    active={route().current('admin.faqs.*')}
-                                >
+                                <NavLink href={route('admin.faqs.index')} active={route().current('admin.faqs.*')}>
                                     FAQ
                                 </NavLink>
 
-                                {/* Log Aktivitas / Audit Trail */}
-                                <NavLink
-                                    href={route('admin.logs.index')}
-                                    active={route().current('admin.logs.*')}
-                                >
+                                <NavLink href={route('admin.logs.index')} active={route().current('admin.logs.*')}>
                                     Log Aktivitas
                                 </NavLink>
 
-                                <NavLink
-                                    href={route('admin.reports.index')}
-                                    active={route().current('admin.reports.*')}
-                                >
+                                <NavLink href={route('admin.reports.index')} active={route().current('admin.reports.*')}>
                                     Laporan
                                 </NavLink>
                             </div>
                         </div>
 
-                        {/* User Dropdown */}
+                        {/* User Dropdown (Desktop) */}
                         <div className="hidden sm:ms-6 sm:flex sm:items-center">
                             <div className="relative ms-3">
                                 <Dropdown>
@@ -80,8 +76,8 @@ export default function AuthenticatedLayout({ header, children }) {
                                             <button
                                                 type="button"
                                                 className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-bold leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
-                                            >                                                {user.name}
-
+                                            >
+                                                {user.name}
                                                 <svg className="-me-0.5 ms-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                                     <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                                                 </svg>
@@ -101,8 +97,12 @@ export default function AuthenticatedLayout({ header, children }) {
                         <div className="-me-2 flex items-center sm:hidden">
                             <button
                                 onClick={() => setShowingNavigationDropdown((previousState) => !previousState)}
-                                className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:outline-none"
+                                className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:outline-none relative"
                             >
+                                {/* Ping Dot di Hamburger agar Admin sadar ada notifikasi masuk */}
+                                {notifications?.pending_count > 0 && !showingNavigationDropdown && (
+                                    <span className="absolute top-2 right-2 h-2 w-2 bg-red-600 rounded-full animate-ping"></span>
+                                )}
                                 <svg className="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                                     <path className={!showingNavigationDropdown ? 'inline-flex' : 'hidden'} strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
                                     <path className={showingNavigationDropdown ? 'inline-flex' : 'hidden'} strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -119,8 +119,17 @@ export default function AuthenticatedLayout({ header, children }) {
                             Dashboard
                         </ResponsiveNavLink>
                         
-                        <ResponsiveNavLink href={route('admin.requests.index')} active={route().current('admin.requests.*')}>
+                        <ResponsiveNavLink 
+                            href={route('admin.requests.index')} 
+                            active={route().current('admin.requests.*')}
+                            className="flex justify-between items-center"
+                        >
                             Daftar Permintaan
+                            {notifications?.pending_count > 0 && (
+                                <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
+                                    {notifications.pending_count}
+                                </span>
+                            )}
                         </ResponsiveNavLink>
 
                         <ResponsiveNavLink href={route('admin.catalogs.index')} active={route().current('admin.catalogs.*')}>
@@ -135,34 +144,42 @@ export default function AuthenticatedLayout({ header, children }) {
                             Audit Trail
                         </ResponsiveNavLink>
 
-                        <ResponsiveNavLink href={route('admin.logs.index')} active={route().current('admin.reports.*')}>
+                        <ResponsiveNavLink href={route('admin.reports.index')} active={route().current('admin.reports.*')}>
                             Laporan
                         </ResponsiveNavLink>
                     </div>
 
                     <div className="border-t border-gray-200 pb-1 pt-4">
-                        <div className="px-4">
-                            <div className="text-base font-medium text-gray-800">{user.name}</div>
-                            <div className="text-sm font-medium text-gray-500">{user.email}</div>
+                        <div className="px-4 text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Akun Saya</div>
+                        <div className="px-4 flex items-center gap-3">
+                            <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-black text-[10px]">
+                                {user.name.charAt(0)}
+                            </div>
+                            <div>
+                                <div className="text-sm font-black text-gray-800 uppercase">{user.name}</div>
+                                <div className="text-[10px] font-medium text-gray-500">{user.email}</div>
+                            </div>
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>Profile</ResponsiveNavLink>
-                            <ResponsiveNavLink method="post" href={route('logout')} as="button">Log Out</ResponsiveNavLink>
+                            <ResponsiveNavLink href={route('profile.edit')}>Profile Settings</ResponsiveNavLink>
+                            <ResponsiveNavLink method="post" href={route('logout')} as="button" className="text-red-600 font-bold">Log Out</ResponsiveNavLink>
                         </div>
                     </div>
                 </div>
             </nav>
 
             {header && (
-                <header className="bg-white shadow">
+                <header className="bg-white shadow-sm border-b border-slate-100">
                     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                         {header}
                     </div>
                 </header>
             )}
 
-            <main>{children}</main>
+            <main className="animate-in fade-in duration-500">
+                {children}
+            </main>
         </div>
     );
 }

@@ -1,6 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router } from '@inertiajs/react';
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
+
 
 export default function RequestList({ auth, requests, filters }) {
     const [search, setSearch] = useState(filters.search || '');
@@ -23,6 +24,20 @@ export default function RequestList({ auth, requests, filters }) {
         };
         return colors[status] || 'bg-gray-100 text-gray-700';
     };
+
+    useEffect(() => {
+        // Set interval untuk refresh data setiap 5 menit (300.000 ms)
+        const interval = setInterval(() => {
+            router.reload({ 
+                preserveScroll: true, // Biar kalau admin lagi scroll, gak balik ke atas
+                only: ['requests'],    // Hanya refresh data permohonan saja biar enteng
+            });
+            console.log('Data direfresh otomatis...');
+        }, 300000); 
+
+        // Bersihkan interval saat admin pindah halaman
+        return () => clearInterval(interval);
+    }, []);
 
     return (
         <AuthenticatedLayout
