@@ -106,7 +106,7 @@ class StatusController extends Controller
             'status' => 'on_process',
             'va_file_path' => null,
             'va_expired_at' => null,
-            'admin_note' => 'User meminta kirim ulang kode billing.'
+            'admin_note' => 'User meminta ulang kode billing karena expired.'
         ]);
 
         return back()->with('success', 'Permintaan billing baru telah dikirim ke Admin.');
