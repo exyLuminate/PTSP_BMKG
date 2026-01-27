@@ -12,10 +12,10 @@ export default function LandingPage({ catalogs, auth }) {
                     {/* Brand/Logo */}
                     <div className="flex items-center gap-3">
                         {/* Ganti src dengan path logo BMKG jika sudah ada */}
-                        <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black italic shadow-lg shadow-blue-100">?</div>
+                       { /*<div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black italic shadow-lg shadow-blue-100">?</div> */}
                         <div className="hidden md:block">
-                            <h2 className="font-black text-slate-800 text-sm leading-tight uppercase tracking-tighter">PTSP BMKG</h2>
-                            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Lampung</p>
+                            <h2 className="font-black text-slate-800 text-sm leading-tight uppercase tracking-tighter">BMKG Lampung</h2>
+                            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Stasiun Raden Inten II</p>
                         </div>
                     </div>
 
@@ -67,7 +67,7 @@ export default function LandingPage({ catalogs, auth }) {
                             </p>
                             <div className="flex gap-4 flex-wrap">
                                 <Link href="/permohonan" className="bg-blue-600 text-white px-10 py-4 rounded-2xl hover:bg-blue-700 font-black text-[10px] uppercase tracking-widest shadow-xl shadow-blue-200 hover:-translate-y-1 transition-all flex items-center gap-3">
-                                    Ajukan Permohonan 
+                                    Permohonan Data 
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-4 h-4">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                                     </svg>
@@ -81,10 +81,11 @@ export default function LandingPage({ catalogs, auth }) {
                         <div className="order-1 lg:order-2 relative group">
                             <div className="absolute inset-0 bg-blue-600 blur-[100px] opacity-10 rounded-full"></div>
                             <img 
-                                src="https://images.unsplash.com/photo-1592210454359-9043f067919b?q=80&w=2070&auto=format&fit=crop" 
+                                src="/assets/img/landing.jpg" 
                                 alt="Ilustrasi Layanan BMKG" 
-                                className="relative rounded-[3rem] shadow-2xl border-8 border-white transform rotate-2 group-hover:rotate-0 transition-all duration-700 w-full object-cover h-[500px]"
+                                className="relative rounded-[3rem] shadow-2xl border-8 border-white transform rotate-2 group-hover:rotate-0 transition-all duration-700 w-full aspect-[1024/572] object-cover"
                             />
+
                         </div>
                     </div>
                 </div>
@@ -188,7 +189,7 @@ export default function LandingPage({ catalogs, auth }) {
                                 </span>
                             </summary>
                             <p className="text-slate-600 mt-4 leading-relaxed font-medium pt-4 border-t border-slate-100">
-                                Data meteorologi yang kami kirimkan akan aktif selama 3 hari kalender. Pastikan Anda segera mengunduh file setelah menerima transaksi selesai.
+                                Data meteorologi yang kami kirimkan akan aktif selama 14 hari kalender. Pastikan Anda segera mengunduh file setelah menerima transaksi selesai.
                             </p>
                         </details>
 

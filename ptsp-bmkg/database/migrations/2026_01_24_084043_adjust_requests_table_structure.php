@@ -6,20 +6,27 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up(): void
-    {
-        Schema::table('activity_logs', function (Blueprint $table) {
-            // Kita tambahkan kolomnya setelah kolom 'details' agar urutannya rapi
-            $table->string('ip_address', 45)->nullable()->after('details');
-            $table->text('user_agent')->nullable()->after('ip_address');
-        });
-    }
+    /**
+     * Run the migrations.
+     */
+    public function up()
+{
+    Schema::table('requests', function (Blueprint $table) {
+        // Hapus kolom yang tidak diperlukan
 
+
+        $table->timestamp('downloaded_at')->nullable();
+        
+        // Update Enum (khusus MySQL)
+        DB::statement("ALTER TABLE requests MODIFY COLUMN status ENUM('on_process','rejected','waiting_payment','invalid','verifikasi_payment','paid','expired','done') DEFAULT 'on_process'");
+    });
+}
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::table('activity_logs', function (Blueprint $table) {
-            // Untuk rollback jika suatu saat ingin dibatalkan
-            $table->dropColumn(['ip_address', 'user_agent']);
-        });
+        //
     }
 };
+

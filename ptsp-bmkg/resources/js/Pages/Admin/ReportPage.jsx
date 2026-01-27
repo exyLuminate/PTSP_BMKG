@@ -78,7 +78,6 @@ export default function ReportPage({ auth }) {
                                     <option value="paid">SUDAH BAYAR (PAID)</option>
                                     <option value="done">SELESAI (DONE)</option>
                                     <option value="rejected">DITOLAK (REJECTED)</option>
-                                    {/* STATUS INVALID BARU */}
                                     <option value="invalid">DATA TIDAK VALID (INVALID)</option>
                                 </select>
                             </div>

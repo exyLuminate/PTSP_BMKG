@@ -71,9 +71,11 @@
         <strong>PENTING:</strong>
         <ul>
             <li><strong>Password Akses</strong> di atas digunakan untuk mengunduh hasil data jika sudah disetujui. Jangan sampai hilang!</li>
-            <li>Simpan Kode Tiket ini untuk mengecek status permohonan secara berkala.</li>
-            <li>Setelah berkas KTP & Surat diverifikasi, admin akan mengirimkan Kode Billing.</li>
-            <li>Proses verifikasi dilakukan pada hari dan jam kerja.</li>
+            <li>Data akan tersedia <strong>paling lambat 3 Hari Kerja</strong> (Sabtu, Minggu, dan hari libur nasional tidak dihitung dalam masa proses).</li>
+            <li>Harap lakukan pengecekan status tiket secara berkala melalui menu <strong>Cek Status</strong> di website PTSP.</li>
+            <li>Segera lakukan pembayaran setelah Kode Billing diterbitkan oleh admin.</li>
+            <li>Jika melewati batas 7 hari, Kode Billing akan kedaluwarsa dan Anda wajib <strong>meminta ulang kode billing</strong> pada halaman cek status.</li>
+            <li>Setelah status menjadi "PAID", file data dapat diunduh dalam masa aktif <strong>14 hari</strong>.</li>
         </ul>
     </div>
 
