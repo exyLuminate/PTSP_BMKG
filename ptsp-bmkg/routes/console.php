@@ -1,10 +1,10 @@
-<?php
+    <?php
 
-use App\Models\DataRequest; // Pastikan import sesuai nama model kamu
-use Illuminate\Support\Facades\Schedule;
-use Illuminate\Support\Facades\Log;
+    use App\Models\DataRequest; // Pastikan import sesuai nama model kamu
+    use Illuminate\Support\Facades\Schedule;
+    use Illuminate\Support\Facades\Log;
 
-// Task Scheduler: Berjalan setiap jam (lebih hemat resource dibanding everyMinute)
+    // Task Scheduler: Berjalan setiap jam
 Schedule::call(function () {
     
     // 1. Billing Lewat 7 Hari -> Jadi INVALID
@@ -16,9 +16,9 @@ Schedule::call(function () {
         Log::info("Scheduler: $invalidated billing telat bayar diubah ke INVALID.");
     }
 
-    // 2. Link Unduh Lewat 3 Hari -> Jadi EXPIRED (Bukan DONE)
-    // Done itu kalau dia SUKSES download. Kalau telat, namanya EXPIRED.
-    $expired = DataRequest::where('status', 'paid')
+    // 2. Link Unduh Lewat 14 Hari -> Jadi EXPIRED
+    // Supaya user yang sudah download pun aksesnya tetap hangus kalau sudah lewat batas waktu.
+    $expired = DataRequest::whereIn('status', ['paid', 'done']) 
         ->where('download_expired_at', '<', now())
         ->update(['status' => 'expired']);
 

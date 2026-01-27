@@ -6,25 +6,20 @@ export default function LandingPage({ catalogs, auth }) {
         <div className="min-h-screen bg-white font-sans text-slate-900 selection:bg-blue-100">
             <Head title="Beranda - PTSP BMKG Radin Inten II" />
 
-            {/* --- NAVBAR (BARU) --- */}
+            {/* --- NAVBAR --- */}
             <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
                 <div className="container mx-auto px-6 h-20 flex justify-between items-center">
-                    {/* Brand/Logo */}
                     <div className="flex items-center gap-3">
-                        {/* Ganti src dengan path logo BMKG jika sudah ada */}
-                       { /*<div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black italic shadow-lg shadow-blue-100">?</div> */}
                         <div className="hidden md:block">
                             <h2 className="font-black text-slate-800 text-sm leading-tight uppercase tracking-tighter">BMKG Lampung</h2>
                             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Stasiun Raden Inten II</p>
                         </div>
                     </div>
 
-                    {/* Navigation Links */}
                     <div className="flex items-center gap-4 md:gap-8">
                         <a href="#how-it-works" className="hidden sm:block text-[10px] font-black text-slate-400 hover:text-blue-600 uppercase tracking-widest transition-colors">Prosedur</a>
                         <a href="#catalogs" className="hidden sm:block text-[10px] font-black text-slate-400 hover:text-blue-600 uppercase tracking-widest transition-colors">Katalog</a>
                         
-                        {/* Tombol Login Admin */}
                         {auth.user ? (
                             <Link 
                                 href={route('admin.dashboard')} 
@@ -45,7 +40,7 @@ export default function LandingPage({ catalogs, auth }) {
             </nav>
 
             {/* --- SECTION 1: HERO SECTION --- */}
-            <section id="hero" className="relative min-h-screen flex items-center pt-24 pb-20 bg-gradient-to-br from-blue-50 via-white to-slate-100 overflow-hidden">
+            <section id="hero" className="relative min-h-screen flex items-center pt-32 pb-20 bg-gradient-to-br from-blue-50 via-white to-slate-100 overflow-hidden">
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-200/30 blur-[120px] rounded-full -mr-48 -mt-24"></div>
                 
                 <div className="container mx-auto px-6 relative z-10">
@@ -78,38 +73,59 @@ export default function LandingPage({ catalogs, auth }) {
                             </div>
                         </div>
 
-                        <div className="order-1 lg:order-2 relative group">
-                            <div className="absolute inset-0 bg-blue-600 blur-[100px] opacity-10 rounded-full"></div>
+                        {/* --- BAGIAN GAMBAR HERO: STACKED LAYOUT --- */}
+                        <div className="order-1 lg:order-2 flex flex-col items-center lg:items-center gap-8 relative">
+                            {/* Logo BMKG diletakkan di atas gambar utama */}
                             <img 
-                                src="/assets/img/landing.jpg" 
-                                alt="Ilustrasi Layanan BMKG" 
-                                className="relative rounded-[3rem] shadow-2xl border-8 border-white transform rotate-2 group-hover:rotate-0 transition-all duration-700 w-full aspect-[1024/572] object-cover"
+                                src="/assets/img/logo_bmkg.png" 
+                                alt="Logo BMKG" 
+                                className="w-48 lg:w-72 h-auto drop-shadow-md animate-fade-in"
                             />
-
+                            
+                            <div className="relative group w-full">
+                                <div className="absolute inset-0 bg-blue-600 blur-[100px] opacity-10 rounded-full"></div>
+                                <img 
+                                    src="/assets/img/landing.jpg" 
+                                    alt="Ilustrasi Layanan BMKG" 
+                                    className="relative rounded-[3rem] shadow-2xl border-8 border-white transform rotate-1 group-hover:rotate-0 transition-all duration-700 w-full aspect-[1024/572] object-cover"
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* --- SECTION 2: PROSEDUR --- */}
+            {/* --- SECTION 2: PROSEDUR (DENGAN PANAH) --- */}
             <section id="how-it-works" className="py-32 bg-white">
                 <div className="container mx-auto px-6">
                     <div className="text-center mb-20">
                         <span className="text-blue-600 font-black uppercase tracking-[0.3em] text-[10px]">Alur Layanan</span>
                         <h2 className="text-4xl font-black text-slate-900 mt-4 tracking-tight">Prosedur Permohonan Data</h2>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
-                        <div className="p-8">
+                    <div className="relative grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+                        {/* Panah Visual antar langkah */}
+                        <div className="hidden md:block absolute top-1/3 left-[28%] z-0 text-blue-200">
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-12 h-12">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                             </svg>
+                        </div>
+                        <div className="hidden md:block absolute top-1/3 left-[61%] z-0 text-blue-200">
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-12 h-12">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                             </svg>
+                        </div>
+
+                        <div className="p-8 relative z-10">
                             <div className="w-20 h-20 bg-blue-50 text-blue-600 rounded-3xl text-2xl font-black flex items-center justify-center mx-auto mb-8 shadow-inner">1</div>
                             <h3 className="text-xl font-black text-slate-900 mb-4 uppercase tracking-tight">Pilih Layanan</h3>
                             <p className="text-slate-500 leading-relaxed font-medium">Lihat katalog layanan dan tentukan jenis data meteorologi yang Anda butuhkan.</p>
                         </div>
-                        <div className="p-8">
+                        <div className="p-8 relative z-10">
                             <div className="w-20 h-20 bg-blue-50 text-blue-600 rounded-3xl text-2xl font-black flex items-center justify-center mx-auto mb-8 shadow-inner">2</div>
                             <h3 className="text-xl font-black text-slate-900 mb-4 uppercase tracking-tight">Isi Formulir</h3>
                             <p className="text-slate-500 leading-relaxed font-medium">Lengkapi identitas diri (KTP) dan unggah berkas permohonan data.</p>
                         </div>
-                        <div className="p-8">
+                        <div className="p-8 relative z-10">
                             <div className="w-20 h-20 bg-blue-50 text-blue-600 rounded-3xl text-2xl font-black flex items-center justify-center mx-auto mb-8 shadow-inner">3</div>
                             <h3 className="text-xl font-black text-slate-900 mb-4 uppercase tracking-tight">Terima Data</h3>
                             <p className="text-slate-500 leading-relaxed font-medium">Selesaikan pembayaran PNBP, data akan dikirimkan melalui sistem.</p>
@@ -118,7 +134,7 @@ export default function LandingPage({ catalogs, auth }) {
                 </div>
             </section>
 
-            {/* --- SECTION 3: KATALOG LAYANAN (Dinamis dari Database) --- */}
+            {/* --- SECTION 3: KATALOG LAYANAN --- */}
             <section id="catalogs" className="py-24 bg-slate-50">
                 <div className="container mx-auto px-6 text-center">
                     <div className="mb-16">
@@ -160,7 +176,7 @@ export default function LandingPage({ catalogs, auth }) {
                 </div>
             </section>
 
-            {/* --- SECTION 4: FAQ (Statis / Hardcoded) --- */}
+            {/* --- SECTION 4: FAQ --- */}
             <section id="faq" className="py-32 bg-white">
                 <div className="container mx-auto px-6 max-w-3xl">
                     <div className="text-center mb-16">
