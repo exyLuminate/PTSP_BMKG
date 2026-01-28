@@ -6,6 +6,16 @@ export default function RequestList({ auth, requests, filters }) {
     const [search, setSearch] = useState(filters.search || '');
     const [status, setStatus] = useState(filters.status || '');
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            router.reload({ 
+                preserveScroll: true, 
+                only: ['requests', 'notifications'] 
+            });
+        }, 30000); // Refresh setiap 30 detik
+
+        return () => clearInterval(interval); // Matikan interval jika pindah halaman
+    }, []);
     // 1. Config Status (Gak Hardcode, Gampang Diubah)
     const statusConfigs = [
         { id: '', label: 'SEMUA', color: 'bg-slate-200 text-slate-700', border: 'border-slate-300' },

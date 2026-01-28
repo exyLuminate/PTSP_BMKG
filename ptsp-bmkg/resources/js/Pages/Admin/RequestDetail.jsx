@@ -1,8 +1,8 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm, Link } from '@inertiajs/react';
+import { Head, useForm, Link, router } from '@inertiajs/react';
+import { useEffect } from 'react'; 
 
 export default function RequestDetail({ auth, requestData }) {
-    // 1. Inisialisasi Form Inertia
     const { data, setData, post, processing, errors } = useForm({
         _method: 'PATCH',
         status: requestData.status,
@@ -10,6 +10,17 @@ export default function RequestDetail({ auth, requestData }) {
         va_file: null,      
         result_file: null,  
     });
+
+    useEffect(() => {
+    const interval = setInterval(() => {
+        router.reload({ 
+            preserveScroll: true, 
+            only: ['requestData', 'notifications']
+        });
+    }, 15000); //  15 detik
+
+    return () => clearInterval(interval);
+    }, []);
 
     const totalPnbp = requestData.catalog.price * requestData.quantity;
 

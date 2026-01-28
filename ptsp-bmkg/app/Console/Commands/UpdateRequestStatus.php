@@ -20,7 +20,7 @@ class UpdateRequestStatus extends Command
             ->update(['status' => 'invalid']);
 
         // 2. Cek Link Download yang sudah lewat 3 hari
-        $expired = DataRequest::whereIn('status', ['paid', 'done']) // <--- Tambahkan 'done' di sini
+        $expired = DataRequest::whereIn('status', ['paid', 'done'])
     ->where('download_expired_at', '<', now())
     ->update(['status' => 'expired']);
             
