@@ -231,7 +231,7 @@ export default function DetailStatus({ request_data }) {
                                 <p className="text-sm opacity-60 italic text-center py-10">
                                     {request_data.admin_note === 'User meminta ulang kode billing karena expired.' 
                                         ? 'Menunggu admin menerbitkan billing baru...' 
-                                        : 'Sedang dalam proses verifikasi berkas oleh admin...'}
+                                        : 'Dalam proses pengerjaan oleh admin...'}
                                 </p>
                             )}
 

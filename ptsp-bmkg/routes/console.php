@@ -26,4 +26,4 @@ Schedule::call(function () {
         Log::info("Scheduler: $expired link unduh hangus diubah ke EXPIRED.");
     }
 
-})->everyMinute();
+})->hourly();

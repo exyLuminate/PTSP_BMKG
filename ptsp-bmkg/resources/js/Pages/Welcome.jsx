@@ -11,8 +11,8 @@ export default function LandingPage({ catalogs, auth }) {
                 <div className="container mx-auto px-6 h-20 flex justify-between items-center">
                     <div className="flex items-center gap-3">
                         <div className="hidden md:block">
-                            <h2 className="font-black text-slate-800 text-sm leading-tight uppercase tracking-tighter">BMKG Lampung</h2>
-                            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Stasiun Raden Inten II</p>
+                            <h2 className="font-black text-slate-800 text-sm leading-tight uppercase tracking-tighter">Stasiun Meteorologi </h2>
+                            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Kelas I Raden Inten II LAMPUNG</p>
                         </div>
                     </div>
 
@@ -51,7 +51,7 @@ export default function LandingPage({ catalogs, auth }) {
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
                                     <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
                                 </span>
-                                PTSP Online BMKG Lampung
+                                PTSP Online 
                             </span>
                             <h1 className="text-5xl md:text-7xl font-black text-slate-900 mb-8 leading-[1.1] tracking-tighter">
                                 Akses Data Meteorologi <br />
@@ -234,8 +234,8 @@ export default function LandingPage({ catalogs, auth }) {
             <footer className="py-16 bg-slate-900 text-white border-t border-slate-800">
                 <div className="container mx-auto px-6 text-center">
                     <div className="mb-8">
-                        <h4 className="text-xl font-black uppercase tracking-[0.3em] mb-2 text-blue-500">PTSP BMKG LAMPUNG</h4>
-                        <p className="text-slate-500 font-medium">Stasiun Meteorologi Radin Inten II - Branti</p>
+                        <h4 className="text-xl font-black uppercase tracking-[0.3em] mb-2 text-blue-500">PTSP Stasiun Meteorologi Kelas I Radin Inten II LAMPUNG</h4>
+                        <p className="text-slate-500 font-medium">Jl </p>
                     </div>
                     <div className="text-[9px] text-slate-600 font-black uppercase tracking-[0.2em] pt-8 border-t border-slate-800/50">
                         &copy; 2026 Badan Meteorologi Klimatologi dan Geofisika. Semua Hak Dilindungi.

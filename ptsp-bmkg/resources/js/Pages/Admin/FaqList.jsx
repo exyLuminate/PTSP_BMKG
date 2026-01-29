@@ -11,8 +11,7 @@ export default function FaqList({ auth, faqs }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedFaq, setSelectedFaq] = useState(null);
 
-    // Inisialisasi Form
-    const { data, setData, patch, processing, errors, reset } = useForm({
+    const { data, setData, patch, delete: destroy, processing, errors, reset } = useForm({
         answer: '',
         is_published: false,
     });
@@ -37,6 +36,17 @@ export default function FaqList({ auth, faqs }) {
         patch(route('admin.faqs.update', selectedFaq.id), {
             onSuccess: () => closeModal(),
         });
+    };
+
+    // 2. Fungsi Hapus
+    const handleDelete = (id) => {
+        if (confirm('Apakah Anda yakin ingin menghapus pertanyaan ini secara permanen?')) {
+            destroy(route('admin.faqs.destroy', id), {
+                onSuccess: () => {
+                    alert('FAQ Berhasil dihapus');
+                }
+            });
+        }
     };
 
     return (
@@ -70,12 +80,22 @@ export default function FaqList({ auth, faqs }) {
                                     <p className="text-sm text-slate-700 leading-relaxed italic">"{faq.question}"</p>
                                 </div>
 
-                                <button 
-                                    onClick={() => openModal(faq)} 
-                                    className="w-full bg-slate-900 text-white py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg active:scale-95 transition-all"
-                                >
-                                    {faq.answer ? 'Edit Jawaban' : 'Berikan Jawaban'}
-                                </button>
+                                <div className="flex gap-2">
+                                    <button 
+                                        onClick={() => openModal(faq)} 
+                                        className="flex-1 bg-slate-900 text-white py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg active:scale-95 transition-all"
+                                    >
+                                        {faq.answer ? 'Edit' : 'Jawab'}
+                                    </button>
+                                    <button 
+                                        onClick={() => handleDelete(faq.id)}
+                                        className="px-4 bg-red-50 text-red-600 border border-red-100 rounded-2xl active:scale-95 transition-all"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.34 6.613m-3.62 0L10.5 9m4.772-4.234a45.108 45.108 0 0 0-5.672 0M4.5 5.053l1.883 13.355A2.25 2.25 0 0 0 8.65 20.35h6.7a2.25 2.25 0 0 0 2.215-1.942L19.447 5.053m-15.424 0a45.108 45.108 0 0 1 15.424 0M9 5.053V4.5A2.25 2.25 0 0 1 11.25 2.25h1.5A2.25 2.25 0 0 1 15 4.5v.553" />
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -108,9 +128,12 @@ export default function FaqList({ auth, faqs }) {
                                                 {faq.is_published ? 'Published' : 'Draft'}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 text-right">
-                                            <button onClick={() => openModal(faq)} className="text-blue-600 hover:text-blue-800 font-black text-[10px] uppercase tracking-widest">
-                                                {faq.answer ? 'Edit Jawaban' : 'Jawab'}
+                                        <td className="px-6 py-4 text-right space-x-4">
+                                            <button onClick={() => openModal(faq)} className="text-blue-600 hover:text-blue-800 font-black text-[10px] uppercase tracking-widest transition-colors">
+                                                {faq.answer ? 'Edit' : 'Jawab'}
+                                            </button>
+                                            <button onClick={() => handleDelete(faq.id)} className="text-red-500 hover:text-red-700 font-black text-[10px] uppercase tracking-widest transition-colors">
+                                                Hapus
                                             </button>
                                         </td>
                                     </tr>
@@ -119,39 +142,26 @@ export default function FaqList({ auth, faqs }) {
                         </table>
                     </div>
 
-                    {/* --- KOMPONEN PAGINATION (FIXED NULL ERROR) --- */}
+                    {/* --- PAGINATION --- */}
                     {faqs?.links && (
                         <div className="mt-8 flex flex-col sm:flex-row justify-between items-center gap-4 px-2">
                             <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
                                 Menampilkan <span className="text-slate-800">{faqs.from || 0}</span> - <span className="text-slate-800">{faqs.to || 0}</span> dari <span className="text-slate-800">{faqs.total}</span> Data
                             </div>
-
                             <nav className="flex flex-wrap justify-center gap-1.5">
                                 {faqs.links.map((link, index) => {
-                                    const cleanLabel = link.label
-                                        .replace('&laquo; Previous', '←')
-                                        .replace('Next &raquo;', '→');
-
-                                    // Render Link jika URL ada, render Span jika URL null (menghindari error toString)
+                                    const cleanLabel = link.label.replace('&laquo; Previous', '←').replace('Next &raquo;', '→');
                                     return link.url ? (
                                         <Link
                                             key={index}
                                             href={link.url}
                                             dangerouslySetInnerHTML={{ __html: cleanLabel }}
-                                            className={`
-                                                min-w-[38px] h-[38px] flex items-center justify-center rounded-xl text-[10px] font-black transition-all border
-                                                ${link.active 
-                                                    ? 'bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-100' 
-                                                    : 'bg-white text-slate-400 border-slate-200 hover:border-blue-400 hover:text-blue-600 active:scale-90'
-                                                }
-                                            `}
+                                            className={`min-w-[38px] h-[38px] flex items-center justify-center rounded-xl text-[10px] font-black transition-all border ${
+                                                link.active ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-slate-400 border-slate-200 hover:text-blue-600'
+                                            }`}
                                         />
                                     ) : (
-                                        <span
-                                            key={index}
-                                            dangerouslySetInnerHTML={{ __html: cleanLabel }}
-                                            className="min-w-[38px] h-[38px] flex items-center justify-center rounded-xl text-[10px] font-black border border-slate-100 text-slate-200 cursor-not-allowed opacity-50"
-                                        />
+                                        <span key={index} dangerouslySetInnerHTML={{ __html: cleanLabel }} className="min-w-[38px] h-[38px] flex items-center justify-center rounded-xl text-[10px] font-black border border-slate-100 text-slate-200 opacity-50" />
                                     );
                                 })}
                             </nav>
@@ -160,7 +170,7 @@ export default function FaqList({ auth, faqs }) {
                 </div>
             </div>
 
-            {/* --- MODAL FAQ (CENTERED) --- */}
+            {/* --- MODAL FAQ --- */}
             <Modal show={isModalOpen} onClose={closeModal} maxWidth="lg">
                 <form onSubmit={submit} className="p-8 text-center">
                     <div className="mx-auto w-16 h-1 bg-blue-600 rounded-full mb-6 opacity-20"></div>
