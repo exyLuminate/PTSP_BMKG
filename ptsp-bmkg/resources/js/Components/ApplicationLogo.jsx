@@ -3,9 +3,9 @@ export default function ApplicationLogo(props) {
         <div className="flex flex-col items-center">
             <img 
                 {...props} 
-                src="/assets/img/logo_bmkg.png" 
+                src="/assets/img/logo_BMKG_resmi.png" 
                 alt="Logo Instansi"
-                className="h-24 w-auto drop-shadow-sm" 
+                className="h-14 w-auto drop-shadow-sm" 
             />
         </div>
     );

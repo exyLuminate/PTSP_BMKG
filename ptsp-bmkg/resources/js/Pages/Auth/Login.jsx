@@ -4,6 +4,7 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
+import ApplicationLogo from '@/Components/ApplicationLogo'; 
 import { Head, Link, useForm } from '@inertiajs/react';
 
 export default function Login({ status, canResetPassword }) {
@@ -24,7 +25,12 @@ export default function Login({ status, canResetPassword }) {
         <GuestLayout>
             <Head title="Login Admin - PTSP BMKG" />
 
-            {/* Header Identitas Portal */}
+            <div className="flex justify-center mb-6">
+                <Link href="/">
+                    <ApplicationLogo className="h-28 w-auto drop-shadow-md" />
+                </Link>
+            </div>
+
             <div className="mb-8 text-center">
                 <h1 className="text-2xl font-bold text-blue-900 tracking-tight">Portal Admin</h1>
                 <p className="text-sm text-gray-500 mt-1 uppercase tracking-widest font-semibold">
