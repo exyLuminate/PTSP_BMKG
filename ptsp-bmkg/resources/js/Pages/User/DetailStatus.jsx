@@ -163,7 +163,7 @@ export default function DetailStatus({ request_data }) {
                                         <p className="text-[10px] font-black uppercase text-red-400 mb-2">Alasan Penolakan:</p>
                                         <p className="text-sm font-medium italic text-red-50 leading-relaxed">"{request_data.admin_note || 'Berkas tidak sesuai ketentuan.'}"</p>
                                     </div>
-                                    <p className="text-[10px] text-slate-500 uppercase tracking-widest leading-loose">Silakan hubungi Admin untuk informasi lebih lanjut.</p>
+                                    <p className="text-[10px] uppercase tracking-widest leading-loose">Silakan hubungi Admin untuk informasi lebih lanjut.</p>
                                 </div>
                             )}
 
@@ -208,7 +208,7 @@ export default function DetailStatus({ request_data }) {
                                         <IconDownload />
                                         Unduh Hasil Data
                                     </a>
-                                    <p className="text-[9px] text-slate-500 italic px-4 leading-relaxed">Link aktif selama 14 hari kalender. Segera simpan dokumen Anda.</p>
+                                    <p className="text-[15px] text-red-500 italic px-4 leading-relaxed">Link aktif selama 14 hari kalender. Segera simpan dokumen Anda.</p>
                                     {request_data.downloaded_at && (
                                         <p className="text-[9px] text-slate-500 uppercase tracking-widest">Terakhir diunduh: {new Date(request_data.downloaded_at).toLocaleString('id-ID')}</p>
                                     )}
