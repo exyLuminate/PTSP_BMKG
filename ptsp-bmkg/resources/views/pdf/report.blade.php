@@ -37,7 +37,7 @@
     <div class="header">
         <h2>BADAN METEOROLOGI, KLIMATOLOGI, DAN GEOFISIKA</h2>
         <h3>STASIUN METEOROLOGI RADIN INTEN II LAMPUNG</h3>
-        <p>Alamat: Jl. Branti Raya No.1, Natar, Lampung Selatan | Telp: (0721) 7697042</p>
+        <p>Jl. Alamsyah Ratu Prawira Negara Km. 28 Branti, Natar, Lampung Selatan | Telp: +62 823-6335-3482</p>
     </div>
 
     <div style="text-align: center; margin-bottom: 20px;">

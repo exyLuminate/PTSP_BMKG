@@ -22,7 +22,7 @@
     <div class="header">
         <h2>BADAN METEOROLOGI KLIMATOLOGI DAN GEOFISIKA</h2>
         <p>Stasiun Meteorologi Radin Inten II Lampung</p>
-        <p>Jl. Branti Raya No.1, Lampung Selatan | Telp: (0721) 7697000</p>
+        <p>Jl. Alamsyah Ratu Prawira Negara Km. 28 Branti, Natar, Lampung Selatan | Telp: +62 823-6335-3482</p>
     </div>
 
     <h3 style="text-align: center; text-transform: uppercase; letter-spacing: 1px;">BUKTI PENDAFTARAN PERMOHONAN DATA</h3>
