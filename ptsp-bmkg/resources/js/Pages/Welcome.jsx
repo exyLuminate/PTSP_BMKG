@@ -304,7 +304,7 @@ export default function LandingPage({ catalogs, auth }) {
                                             <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
                                         </svg>
                                     </div>
-                                    <span className="text-sm font-bold text-slate-300 group-hover:text-white transition-colors">Instagram</span>
+                                    <span className="text-sm font-bold text-slate-300 group-hover:text-white transition-colors">bmkglampung</span>
                                 </a>
 
                                 <a 
@@ -320,7 +320,7 @@ export default function LandingPage({ catalogs, auth }) {
                                             <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
                                         </svg>
                                     </div>
-                                    <span className="text-sm font-bold text-slate-300 group-hover:text-white transition-colors">Website Resmi</span>
+                                    <span className="text-sm font-bold text-slate-300 group-hover:text-white transition-colors">lampung.bmkg.go.id</span>
                                 </a>
                             </div>
                         </div>
