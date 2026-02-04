@@ -20,19 +20,24 @@ export default function CatalogList({ auth, catalogs }) {
     });
 
     const openModal = (catalog = null) => {
-        setEditingCatalog(catalog);
-        if (catalog) {
-            setData({
-                info_type: catalog.info_type,
-                category: catalog.category,
-                unit: catalog.unit,
-                price: catalog.price,
-            });
-        } else {
-            reset();
-        }
-        setIsModalOpen(true);
-    };
+    setEditingCatalog(catalog);
+    if (catalog) {
+        setData({
+            info_type: catalog.info_type,
+            category: catalog.category,
+            unit: catalog.unit,
+            price: catalog.price,
+        });
+    } else {
+        setData({
+            info_type: '',
+            category: 'Informasi Meteorologi', 
+            unit: '',
+            price: '',
+        });
+    }
+    setIsModalOpen(true);
+};
 
     const closeModal = () => {
         setIsModalOpen(false);
@@ -175,9 +180,9 @@ export default function CatalogList({ auth, catalogs }) {
                                 value={data.category}
                                 onChange={(e) => setData('category', e.target.value)}
                             >
-                                <option value="INFORMASI METEOROLOGI">Informasi Meteorologi</option>
-                                <option value="INFORMASI KHUSUS METEOROLOGI">Informasi Khusus Meteorologi</option>
-                                <option value="JASA KONSULTASI METEOROLOGI">Jasa Konsultasi Meteorologi</option>
+                                <option value="Informasi Meteorologi">Informasi Meteorologi</option>
+                                <option value="Informasi Khusus Meteorologi">Informasi Khusus Meteorologi</option>
+                                <option value="Jasa Konsultasi Meteorologi">Jasa Konsultasi Meteorologi</option>
                             </select>
                             <InputError message={errors.category} className="mt-1" />
                         </div>

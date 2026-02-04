@@ -18,25 +18,25 @@ class DataCatalogController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'info_type' => 'required|string|max:255',
-            'category'  => 'required|in:Meteorologi,Khusus,Konsultasi',
-            'unit'      => 'required|string',
-            'price'     => 'required|numeric|min:0',
-        ]);
+{
+    $validated = $request->validate([
+        'info_type' => 'required|string|max:255',
+        'category'  => 'required|in:Informasi Meteorologi,Informasi Khusus Meteorologi,Jasa Konsultasi Meteorologi',
+        'unit'      => 'required|string',
+        'price'     => 'required|numeric|min:0',
+    ]);
 
-        // 1. Simpan data ke variabel $catalog terlebih dahulu
-        $catalog = DataCatalog::create($validated);
+    // Simpan data
+    $catalog = DataCatalog::create($validated);
 
-        // 2. Catat Log menggunakan data yang baru disimpan
-        ActivityLog::record('add_catalog', [
-            'info_type' => $catalog->info_type,
-            'price' => $catalog->price
-        ]);
+    // Catat Log
+    ActivityLog::record('add_catalog', [
+        'info_type' => $catalog->info_type,
+        'price' => $catalog->price
+    ]);
 
-        return redirect()->back()->with('success', 'Item katalog berhasil ditambahkan.');
-    }
+    return redirect()->back()->with('success', 'Item katalog berhasil ditambahkan.');
+}
 
     public function update(Request $request, $id)
     {
@@ -45,13 +45,12 @@ class DataCatalogController extends Controller
         // Simpan harga lama untuk perbandingan di log
         $oldPrice = $catalog->price;
 
-        $validated = $request->validate([
-            'info_type' => 'required|string|max:255',
-            'category'  => 'required|in:Meteorologi,Khusus,Konsultasi',
-            'unit'      => 'required|string',
-            'price'     => 'required|numeric|min:0',
-        ]);
-
+     $validated = $request->validate([
+        'info_type' => 'required|string|max:255',
+        'category'  => 'required|in:Informasi Meteorologi,Informasi Khusus Meteorologi,Jasa Konsultasi Meteorologi',
+        'unit'      => 'required|string',
+        'price'     => 'required|numeric|min:0',
+    ]);
         $catalog->update($validated);
 
         // Catat Log perubahan
