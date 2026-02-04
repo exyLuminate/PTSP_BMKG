@@ -183,6 +183,10 @@ export default function CatalogList({ auth, catalogs }) {
                                 <option value="Informasi Meteorologi">Informasi Meteorologi</option>
                                 <option value="Informasi Khusus Meteorologi">Informasi Khusus Meteorologi</option>
                                 <option value="Jasa Konsultasi Meteorologi">Jasa Konsultasi Meteorologi</option>
+                                <option value="Informasi Klimatologi">Informasi Klimatologi</option>
+                                <option value="Informasi Geofisika">Informasi Geofisika</option>
+                                <option value="Informasi Maritim">Informasi Maritim</option>
+                                <option value="Informasi Peralatan">Informasi Peralatan</option>
                             </select>
                             <InputError message={errors.category} className="mt-1" />
                         </div>
@@ -235,5 +239,9 @@ function getCategoryStyle(category) {
     if (cat.includes('KHUSUS')) return 'bg-purple-50 text-purple-700 border-purple-200';
     if (cat.includes('KONSULTASI') || cat.includes('JASA')) return 'bg-amber-50 text-amber-700 border-amber-200';
     if (cat.includes('METEOROLOGI')) return 'bg-blue-50 text-blue-700 border-blue-200';
+    if (cat.includes('KLIMATOLOGI')) return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+    if (cat.includes('GEOFISIKA')) return 'bg-rose-50 text-rose-700 border-rose-200';
+    if (cat.includes('MARITIM')) return 'bg-cyan-50 text-cyan-700 border-cyan-200';
+    if (cat.includes('PERALATAN')) return 'bg-slate-50 text-slate-700 border-slate-200';
     return 'bg-slate-50 text-slate-600 border-slate-200';
 }

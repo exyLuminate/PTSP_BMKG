@@ -21,8 +21,7 @@ class DataCatalogController extends Controller
 {
     $validated = $request->validate([
         'info_type' => 'required|string|max:255',
-        'category'  => 'required|in:Informasi Meteorologi,Informasi Khusus Meteorologi,Jasa Konsultasi Meteorologi',
-        'unit'      => 'required|string',
+        'category'  => 'required|in:Informasi Meteorologi,Informasi Khusus Meteorologi,Jasa Konsultasi Meteorologi,Informasi Klimatologi,Informasi Geofisika,Informasi Maritim,Informasi Peralatan',        'unit'      => 'required|string',
         'price'     => 'required|numeric|min:0',
     ]);
 
@@ -47,7 +46,7 @@ class DataCatalogController extends Controller
 
      $validated = $request->validate([
         'info_type' => 'required|string|max:255',
-        'category'  => 'required|in:Informasi Meteorologi,Informasi Khusus Meteorologi,Jasa Konsultasi Meteorologi',
+        'category'  => 'required|in:Informasi Meteorologi,Informasi Khusus Meteorologi,Jasa Konsultasi Meteorologi,Informasi Klimatologi,Informasi Geofisika,Informasi Maritim,Informasi Peralatan',
         'unit'      => 'required|string',
         'price'     => 'required|numeric|min:0',
     ]);
