@@ -78,6 +78,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/logs', [ActivityLogController::class, 'index'])->name('logs.index');
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/download', [ReportController::class, 'download'])->name('reports.download');
+    Route::get('/panduan', function () {return Inertia::render('Admin/Panduan');})->name('panduan');
+
 });
 
 require __DIR__.'/auth.php';
