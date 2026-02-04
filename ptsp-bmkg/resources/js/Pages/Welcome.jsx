@@ -125,6 +125,24 @@ export default function LandingPage({ catalogs, auth }) {
                             <p className="text-slate-500 leading-relaxed font-medium">Selesaikan pembayaran PNBP, data akan dikirimkan melalui sistem.</p>
                         </div>
                     </div>
+                    <div className="mt-20 text-center">
+                        <p className="text-slate-500 font-medium mb-6">
+                            Ingin memahami alur permohonan data secara lebih rinci dari awal hingga akhir?
+                        </p>
+
+                        <a
+                            href="https://docs.google.com/document/d/1Xbf-YAwt6XmtUa3DWfkX1pTKF3DFvOhwBn2RGrW2nsw/edit?tab=t.0#heading=h.6m1a22ns72zi"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl
+                                        bg-blue-50 text-blue-700 font-black text-[10px]
+                                        uppercase tracking-widest
+                                        hover:bg-blue-600 hover:text-white
+                                        transition-all shadow-md shadow-blue-100"
+                        >
+                            Panduan Lengkap Permohonan Data
+                        </a>
+                    </div>
                 </div>
             </section>
 
